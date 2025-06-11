@@ -1,0 +1,8 @@
+spring:
+ application:
+  name: SoftWareCupSpring
+mybatis:
+ configuration:
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 开启驼峰映射,current_time->currentTime
+  map-underscore-to-camel-case: true
