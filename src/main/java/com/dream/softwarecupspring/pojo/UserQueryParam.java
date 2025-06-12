@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserQueryParam {
-    String name;
-    Integer gender;
-    String subject;
+    private String name;
+    private Integer gender;
+    private Integer role;
+    private String subject;
     private int page = 1;
     private int pageSize = 10;
 }

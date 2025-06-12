@@ -6,9 +6,9 @@ import com.dream.softwarecupspring.pojo.Result;
 import com.dream.softwarecupspring.pojo.User;
 import com.dream.softwarecupspring.pojo.UserQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/admin/user")
@@ -20,6 +20,31 @@ public class UserController {
     public Result page(UserQueryParam empQueryParam) {
         PageResult<User> pageResult = userService.pageQuery(empQueryParam);
         return Result.success(pageResult);
+    }
+
+    @DeleteMapping
+    public Result deleteByIds(@RequestParam List<Integer> ids) {
+        userService.deleteByIds(ids);
+        return Result.success();
+    }
+
+    @PostMapping
+    public Result add(@RequestBody User user) {
+        userService.add(user);
+        return Result.success();
+    }
+
+
+    @GetMapping("/{id}")
+    public Result getInfo(@PathVariable Integer id) {
+        User user = userService.getInfo(id);
+        return Result.success(user);
+    }
+
+    @PutMapping
+    public Result update(@RequestBody User user) {
+        userService.update(user);
+        return Result.success();
     }
 
 }
