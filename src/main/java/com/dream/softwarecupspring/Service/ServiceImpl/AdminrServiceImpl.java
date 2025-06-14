@@ -1,7 +1,7 @@
-package com.dream.softwarecupspring.AdminService.AdminServiceImpl;
+package com.dream.softwarecupspring.Service.ServiceImpl;
 
-import com.dream.softwarecupspring.AdminMapper.UserMapper;
-import com.dream.softwarecupspring.AdminService.UserService;
+import com.dream.softwarecupspring.Mapper.AdminMapper;
+import com.dream.softwarecupspring.Service.AdminrService;
 import com.dream.softwarecupspring.pojo.PageResult;
 import com.dream.softwarecupspring.pojo.User;
 import com.dream.softwarecupspring.pojo.UserQueryParam;
@@ -15,37 +15,37 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class AdminrServiceImpl implements AdminrService {
     @Autowired
-    UserMapper userMapper;
+    AdminMapper adminMapper;
 
     @GetMapping
     public PageResult<User> pageQuery(UserQueryParam userQueryParam) {
         PageHelper.startPage(userQueryParam.getPage(),userQueryParam.getPageSize());
-        Page<User> p = (Page<User>) userMapper.pageSelect(userQueryParam);
+        Page<User> p = (Page<User>) adminMapper.pageSelect(userQueryParam);
         return new PageResult<>(p.getTotal(), p.getResult());
     }
 
     @Override
     public void deleteByIds(List<Integer> ids) {
-        userMapper.deleteByIds(ids);
+        adminMapper.deleteByIds(ids);
     }
 
     @Override
     public User getInfo(Integer id) {
-        return userMapper.getById(id);
+        return adminMapper.getById(id);
     }
 
     @Override
     public void add(User user) {
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
-        userMapper.insert(user);
+        adminMapper.insert(user);
     }
 
     @Override
     public void update(User user) {
         user.setUpdateTime(LocalDateTime.now());
-        userMapper.updateById(user);
+        adminMapper.updateById(user);
     }
 }

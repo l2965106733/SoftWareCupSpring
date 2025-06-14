@@ -1,4 +1,4 @@
-package com.dream.softwarecupspring.AdminMapper;
+package com.dream.softwarecupspring.Mapper;
 
 import com.dream.softwarecupspring.pojo.User;
 import com.dream.softwarecupspring.pojo.UserQueryParam;
@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 @Mapper
-public interface UserMapper {
+public interface AdminMapper {
     List<User> pageSelect(UserQueryParam userQueryParam);
 
 
