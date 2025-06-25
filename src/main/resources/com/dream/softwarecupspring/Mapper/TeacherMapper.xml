@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dream.softwarecupspring.Mapper.TeacherMapper">
+
+    <insert id="insertResource" parameterType="com.dream.softwarecupspring.pojo.Resource" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO resource (
+            teacher_id,
+            resource_name,
+            resource_url,
+            resource_type,
+            file_size,
+            upload_time,
+            description,
+            download_count
+        ) VALUES (
+                     #{teacherId},
+                     #{resourceName},
+                     #{resourceUrl},
+                     #{resourceType},
+                     #{fileSize},
+                     #{uploadTime},
+                     #{description},
+                     #{downloadCount}
+                 )
+    </insert>
+
+    <update id="updateResource" parameterType="com.dream.softwarecupspring.pojo.Resource">
+        UPDATE resource
+        SET
+            resource_name = #{resourceName},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectResourcesByTeacherId" resultType="com.dream.softwarecupspring.pojo.Resource">
+        SELECT *
+        FROM resource
+        WHERE teacher_id = #{teacherId}
+        ORDER BY upload_time DESC
+    </select>
+
+    <delete id="deleteResourceById" parameterType="long">
+        DELETE FROM resource WHERE id = #{resourceId}
+    </delete>
+
+    <insert id="saveAll" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO questions (
+        content,
+        answer,
+        `explain`,
+        type,
+        score,
+        create_time,
+        update_time
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.content},
+            #{item.answer},
+            #{item.explain},
+            #{item.type},
+            #{item.score},
+            #{item.createTime},
+            #{item.updateTime}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveHomework" parameterType="com.dream.softwarecupspring.pojo.Homework"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO homework (
+            title, teacher_id, start_time, end_time,
+            total_score, status, created_time, updated_time
+        ) VALUES (
+                     #{title}, #{teacherId}, #{startTime}, #{endTime},
+                     #{totalScore}, #{status}, #{createTime}, #{updateTime}
+                 )
+    </insert>
+
+    <insert id="insertHomeworkQuestions" parameterType="java.util.List">
+        INSERT INTO homework_questions (homework_id, question_id, question_order)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.homeworkId}, #{item.questionId}, #{item.questionOrder})
+        </foreach>
+    </insert>
+
+    <insert id="addTeacherAnswer">
+        UPDATE student_questions
+        SET teacher_id = #{teacherId},
+            answer = #{answer},
+            status = 1
+        WHERE id = #{questionId}
+    </insert>
+
+    <select id="getHomeworkByTeacherId" resultType="com.dream.softwarecupspring.pojo.Homework">
+        select id, title, status, created_time from software.homework where teacher_id = #{teacherId}
+    </select>
+
+    <select id="getStudentQuestions" resultType="com.dream.softwarecupspring.pojo.StudentQuestion">
+        SELECT
+            sq.id,
+            sq.student_id,
+            sq.teacher_id,
+            sq.title,
+            sq.content,
+            sq.status,
+            sq.answer,
+            sq.created_time,
+            u.name as student_name
+        FROM student_questions sq
+                 LEFT JOIN users u ON sq.student_id = u.id
+        WHERE sq.teacher_id = #{teacherId}
+        ORDER BY sq.created_time DESC
+    </select>
+
+    <select id="getHomeworkDetail" resultType="com.dream.softwarecupspring.pojo.Question">
+        SELECT q.*
+        FROM homework_questions hq
+                 JOIN questions q ON hq.question_id = q.id
+        WHERE hq.homework_id = #{homeworkId}
+        ORDER BY hq.question_order
+    </select>
+
+    <select id="getStudentSubmissions" resultType="com.dream.softwarecupspring.pojo.StudentHomework">
+        SELECT
+            sh.id,
+            sh.homework_id AS homeworkId,
+            sh.student_id AS studentId,
+            u.name AS studentName,
+            sh.status,
+            sh.total_score,
+            sh.submit_time AS submitTime,
+            sh.feedback,
+            sh.created_time AS createdTime
+        FROM student_homework sh
+                 LEFT JOIN users u ON sh.student_id = u.id
+        WHERE sh.homework_id = #{homeworkId}
+    </select>
+</mapper>

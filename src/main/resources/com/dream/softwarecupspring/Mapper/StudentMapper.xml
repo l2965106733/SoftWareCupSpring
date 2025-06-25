@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dream.softwarecupspring.Mapper.StudentMapper">
+
+    <!-- ==================== 教师端：统计与作业管理 ==================== -->
+    <select id="countTotalHomework" resultType="int">
+        SELECT COUNT(*) FROM student_homework sh JOIN homework h ON sh.homework_id = h.id WHERE h.teacher_id = #{teacherId}
+    </select>
+
+    <select id="countPublishedHomework" resultType="int">
+        SELECT COUNT(*) FROM homework WHERE teacher_id = #{teacherId} AND status = 1
+    </select>
+
+    <select id="countGradedHomework" resultType="int">
+        SELECT COUNT(*) FROM student_homework sh JOIN homework h ON sh.homework_id = h.id WHERE h.teacher_id = #{teacherId} AND total_score IS NOT NULL
+    </select>
+
+    <select id="countPendingGrade" resultType="int">
+        SELECT COUNT(*) FROM student_homework sh JOIN homework h ON sh.homework_id = h.id WHERE h.teacher_id = #{teacherId} AND total_score IS NULL
+    </select>
+
+    <select id="getAverageSubmitRate" resultType="double">
+        SELECT IFNULL(
+         COUNT(DISTINCT sh.student_id) / NULLIF((SELECT COUNT(*) FROM teacher_student WHERE teacher_id = #{teacherId}), 0), 
+         0
+       )
+       FROM student_homework sh
+       JOIN homework h ON sh.homework_id = h.id
+       WHERE h.teacher_id = #{teacherId}
+    </select>
+
+    <select id="getRecentHomeworkByTeacherId" resultType="map">
+        SELECT sh.* FROM student_homework sh JOIN homework h ON sh.homework_id = h.id WHERE h.teacher_id = #{teacherId} ORDER BY sh.created_time DESC LIMIT 5
+    </select>
+
+    <select id="getScoreDistributionByTeacherId" resultType="map">
+        SELECT CASE
+                 WHEN total_score >= 90 THEN '90-100'
+                 WHEN total_score >= 80 THEN '80-89'
+                 WHEN total_score >= 70 THEN '70-79'
+                 WHEN total_score >= 60 THEN '60-69'
+                 ELSE '0-59'
+               END AS score_range,
+               COUNT(*) AS count
+        FROM student_homework sh JOIN homework h ON sh.homework_id = h.id
+        WHERE h.teacher_id = #{teacherId}
+        GROUP BY score_range
+    </select>
+
+    <!-- ==================== 学生端：课件查看 ==================== -->
+    <select id="getCoursewareListByStudentId" resultType="map">
+        SELECT r.*
+       FROM resource r
+       JOIN teacher_student ts ON r.teacher_id = ts.teacher_id
+       WHERE ts.student_id = #{studentId}
+       ORDER BY r.upload_time DESC
+    </select>
+
+    <!-- ==================== 学生端：学习统计 ==================== -->
+    <select id="getTotalStudyTime" resultType="long">
+        SELECT IFNULL(SUM(study_duration), 0)
+        FROM student_study_record
+        WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getTodayStudyTime" resultType="long">
+        SELECT IFNULL(SUM(study_duration), 0)
+        FROM student_study_record
+        WHERE student_id = #{studentId} AND DATE(last_view_time) = CURDATE()
+    </select>
+
+    <select id="getWeekStudyTime" resultType="long">
+        SELECT IFNULL(SUM(study_duration), 0)
+        FROM student_study_record
+        WHERE student_id = #{studentId} AND YEARWEEK(last_view_time) = YEARWEEK(CURDATE())
+    </select>
+
+    <select id="getCompletedCoursewareCount" resultType="int">
+        SELECT COUNT(DISTINCT resource_id)
+        FROM student_study_record
+        WHERE student_id = #{studentId} AND study_status = 1
+    </select>
+
+    <select id="getTotalCoursewareCount" resultType="int">
+        SELECT COUNT(DISTINCT resource_id)
+        FROM student_study_record
+        WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getAverageProgress" resultType="double">
+        SELECT IFNULL(AVG(study_status), 0)
+        FROM student_study_record
+        WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getStudyDaysCount" resultType="int">
+        SELECT COUNT(DISTINCT DATE(first_view_time))
+        FROM student_study_record
+        WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getRecentStudyRecords" resultType="map">
+        SELECT * FROM student_study_record
+        WHERE student_id = #{studentId}
+        ORDER BY last_view_time DESC
+        LIMIT 10
+    </select>
+
+    <insert id="insertStudyRecord" parameterType="com.dream.softwarecupspring.pojo.StudyRecord">
+        INSERT INTO student_study_record (student_id, resource_id, study_status, first_view_time, last_view_time, view_count, study_duration, created_time, updated_time)
+        VALUES (#{studentId}, #{resourceId}, #{studyStatus}, #{firstViewTime}, #{lastViewTime}, #{viewCount}, #{studyDuration}, #{createdTime}, #{updatedTime})
+    </insert>
+
+
+    <!-- ==================== 学生端：AI 提问记录 ==================== -->
+    <insert id="insertAiQuestion" parameterType="com.dream.softwarecupspring.pojo.AiQuestion">
+        INSERT INTO student_ai_questions (student_id, question_content, ai_response, created_time, updated_time)
+        VALUES (#{studentId}, #{questionContent}, #{aiResponse}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <!-- ==================== 学生端：作业相关 ==================== -->
+    <select id="getHomeworkListByStudentId" resultType="map">
+        SELECT * FROM student_homework WHERE student_id = #{studentId} ORDER BY created_time DESC
+    </select>
+
+    <select id="getHomeworkDetailById" resultType="map">
+        SELECT * FROM student_homework WHERE id = #{homeworkId}
+    </select>
+
+    <select id="getByHomeworkAndStudent" resultType="com.dream.softwarecupspring.pojo.StudentHomework">
+        SELECT * FROM student_homework WHERE homework_id = #{homeworkId} AND student_id = #{studentId} LIMIT 1
+    </select>
+
+    <insert id="insertHomework" parameterType="com.dream.softwarecupspring.pojo.StudentHomework" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_homework (homework_id, student_id, status, total_score, submit_time, created_time, feedback)
+        VALUES (#{homeworkId}, #{studentId}, #{status}, #{totalScore}, #{submitTime}, #{createdTime}, #{feedback})
+    </insert>
+
+    <update id="updateHomeworkById" parameterType="com.dream.softwarecupspring.pojo.StudentHomework">
+        UPDATE student_homework
+        SET status = #{status}, total_score = #{totalScore}, submit_time = #{submitTime}, feedback = #{feedback}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateById" parameterType="com.dream.softwarecupspring.pojo.StudentHomework">
+        UPDATE student_homework
+        SET status = #{status}, total_score = #{totalScore}, submit_time = #{submitTime}, feedback = #{feedback}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.dream.softwarecupspring.pojo.StudentHomework">
+        SELECT * FROM student_homework WHERE id = #{studentHomeworkId}
+    </select>
+
+    <update id="updateScoreByHomeworkAndQuestion" parameterType="com.dream.softwarecupspring.pojo.StudentAnswer">
+        UPDATE student_answers
+        SET score = #{score}, feedback = #{feedback}
+        WHERE homework_id = #{homeworkId} AND question_id = #{questionId} AND student_id = #{studentId}
+    </update>
+
+    <select id="getTotalHomeworkCount" resultType="int">
+        SELECT COUNT(*) FROM student_homework WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getSubmittedHomeworkCount" resultType="int">
+        SELECT COUNT(*) FROM student_homework WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <select id="getGradedHomeworkCount" resultType="int">
+        SELECT COUNT(*) FROM student_homework WHERE student_id = #{studentId} AND total_score IS NOT NULL
+    </select>
+
+    <select id="getAverageScore" resultType="double">
+        SELECT IFNULL(AVG(total_score), 0) FROM student_homework WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getBestScore" resultType="int">
+        SELECT IFNULL(MAX(total_score), 0) FROM student_homework WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getRecentHomeworkByStudentId" resultType="map">
+        SELECT * FROM student_homework WHERE student_id = #{studentId} ORDER BY created_time DESC LIMIT 5
+    </select>
+
+    <select id="getScoreDistributionByStudentId" resultType="map">
+        SELECT CASE
+                 WHEN total_score >= 90 THEN '90-100'
+                 WHEN total_score >= 80 THEN '80-89'
+                 WHEN total_score >= 70 THEN '70-79'
+                 WHEN total_score >= 60 THEN '60-69'
+                 ELSE '0-59'
+               END AS score_range,
+               COUNT(*) AS count
+        FROM student_homework
+        WHERE student_id = #{studentId}
+        GROUP BY score_range
+    </select>
+
+    <!-- ==================== 学生端：互动问答 ==================== -->
+    <insert id="insertQuestion" parameterType="com.dream.softwarecupspring.pojo.StudentQuestion" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_questions (student_id, teacher_id, title, content, status, answer, answer_time, rating, created_time, updated_time)
+        VALUES (#{studentId}, #{teacherId}, #{title}, #{content}, #{status}, #{answer}, #{answerTime}, #{rating}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <select id="getQuestionsByStudentId" resultType="com.dream.softwarecupspring.pojo.StudentQuestion">
+        SELECT * FROM student_questions WHERE student_id = #{studentId} ORDER BY created_time DESC
+    </select>
+
+    <select id="selectQuestionById" resultType="com.dream.softwarecupspring.pojo.StudentQuestion">
+        SELECT * FROM student_questions WHERE id = #{questionId}
+    </select>
+
+    <update id="updateQuestionById" parameterType="com.dream.softwarecupspring.pojo.StudentQuestion">
+        UPDATE student_questions
+        SET rating = #{rating}, updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getTotalQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getAnsweredQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <select id="getPendingQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId} AND status = 0
+    </select>
+
+    <select id="getAverageRating" resultType="double">
+        SELECT IFNULL(AVG(rating), 0) FROM student_questions WHERE student_id = #{studentId} AND rating IS NOT NULL
+    </select>
+
+    <select id="getQuestionsByType" resultType="map">
+        SELECT title AS type, COUNT(*) AS count
+        FROM student_questions
+        WHERE student_id = #{studentId}
+        GROUP BY title
+    </select>
+
+    <select id="getRecentQuestions" resultType="map">
+        SELECT id, title, created_time, status
+        FROM student_questions
+        WHERE student_id = #{studentId}
+        ORDER BY created_time DESC
+        LIMIT 5
+    </select>
+
+</mapper>
+

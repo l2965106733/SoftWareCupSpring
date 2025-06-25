@@ -53,6 +53,7 @@
     <select id="pageSelect" resultType="com.dream.softwarecupspring.pojo.User">
         select id, username, password, name, gender, role, identifier, subject, create_time, update_time from users
         <where>
+            role != 3
             <if test="name != null and name != ''">
                 AND name like concat('%',#{name},'%')
             </if>

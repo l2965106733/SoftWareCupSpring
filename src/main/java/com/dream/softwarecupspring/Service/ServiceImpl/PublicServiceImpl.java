@@ -6,7 +6,6 @@ import com.dream.softwarecupspring.pojo.LoginInfo;
 import com.dream.softwarecupspring.pojo.ResetQueryParam;
 import com.dream.softwarecupspring.pojo.User;
 import com.dream.softwarecupspring.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

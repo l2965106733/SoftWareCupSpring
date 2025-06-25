@@ -5,7 +5,6 @@ import com.dream.softwarecupspring.pojo.LoginInfo;
 import com.dream.softwarecupspring.pojo.ResetQueryParam;
 import com.dream.softwarecupspring.pojo.Result;
 import com.dream.softwarecupspring.pojo.User;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,7 +34,7 @@ public class PublicController {
         if (rows > 0) {
             return Result.success();  // 成功更新
         } else {
-            return Result.error("原密码错误或账号不存在"); // 更新失败
+            return Result.error("更新失败，请检查信息"); // 更新失败
         }
     }
 }

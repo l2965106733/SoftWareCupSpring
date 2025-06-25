@@ -11,3 +11,12 @@ mybatis:
   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   # 开启驼峰映射,current_time->currentTime
   map-underscore-to-camel-case: true
+
+aliyun:
+ oss:
+  endpoint: https://oss-cn-beijing.aliyuncs.com
+  bucketName: softwarecup2025
+  region: cn-beijing
+
+ai:
+ flaskUrl: https://hz-4.matpool.com:26112
