@@ -19,4 +19,4 @@ aliyun:
   region: cn-beijing
 
 ai:
- flaskUrl: https://hz-4.matpool.com:26112
+ flaskUrl: https://hz-t4.matpool.com:29040

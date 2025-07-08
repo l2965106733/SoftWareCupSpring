@@ -19,6 +19,7 @@ public class StudentHomework {
     private Integer totalScore; // 重命名为totalScore，与前端保持一致
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime submitTime;
+    private Map<String, String> answers;
     private String feedback;
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;

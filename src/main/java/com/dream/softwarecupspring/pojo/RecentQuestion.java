@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TanswerQueryParam {
-    private String type;
-    private String question;
+@Data
+public class RecentQuestion {
+    private Integer id;
+    private String title;
+    private String studentName;
+    private String createdTime;
 }

@@ -1,9 +1,6 @@
 package com.dream.softwarecupspring.Service;
 
-import com.dream.softwarecupspring.pojo.AiQuestion;
-import com.dream.softwarecupspring.pojo.StudentHomework;
-import com.dream.softwarecupspring.pojo.StudentQuestion;
-import com.dream.softwarecupspring.pojo.StudyRecord;
+import com.dream.softwarecupspring.pojo.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +12,11 @@ public interface StudentService {
 
     Map<String, Object> getStudyStats(Integer studentId);
 
-    void recordStudyBehavior(StudyRecord studyRecord);
-
     void recordAiQuestion(AiQuestion aiQuestion);
 
     List<Map<String, Object>> getHomeworkList(Integer studentId);
 
-    Map<String, Object> getHomeworkDetail(Integer homeworkId);
+    List<Map<String, Object>> getHomeworkDetail(Integer homeworkId);
 
     void saveHomeworkDraft(StudentHomework studentHomework);
 
@@ -40,4 +35,14 @@ public interface StudentService {
     Map<String, Object> getInteractStats(Integer studentId);
 
     Integer getTeacherId(Integer studentId);
+
+    void submitRating(Integer questionId, Integer rating);
+
+    Integer getRating(Integer questionId);
+
+    List<StudentQuestion> getRatingHistory(Integer studentId);
+
+    Map<String, Object> getRatingStats(Integer studentId);
+
+    boolean reportStudyRecord(StudyRecordDTO dto);
 }

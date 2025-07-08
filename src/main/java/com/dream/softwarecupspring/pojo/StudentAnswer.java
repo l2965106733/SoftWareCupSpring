@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 public class StudentAnswer {
     private Integer id;
     private Integer homeworkId;  // 学生作业ID
+    private Integer studentId;
     private Integer questionId;         // 题目ID
-    private String studentAnswer;       // 学生答案
+    private String answer;       // 学生答案
     private Integer score;              // 得分
     private Integer isCorrect;          // 是否正确：1-正确，0-错误
     private LocalDateTime createdTime;

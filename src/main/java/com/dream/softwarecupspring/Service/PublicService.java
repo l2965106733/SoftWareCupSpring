@@ -7,6 +7,5 @@ import com.dream.softwarecupspring.pojo.User;
 public interface PublicService {
     LoginInfo login(User user);
 
-
     Integer reset(ResetQueryParam resetQueryParam);
 }

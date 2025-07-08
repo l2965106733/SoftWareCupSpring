@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface TeacherService {
-    void saveQuestion(List<Question> questions);
+    List<Question> saveQuestion(List<Question> questions);
 
     void publishHomework(Homework homeworkQueryParams);
 
@@ -30,5 +30,13 @@ public interface TeacherService {
 
     void gradeHomework(StudentHomework studentHomework);
 
-    Map<String, Object> getHomeworkStats(Integer teacherId);
+    HomeworkStats getHomeworkStats(Integer teacherId);
+
+    TeacherOverview getOverview(Integer teacherId);
+
+    List<StudentSummary> getStudentSummaries(Integer teacherId);
+
+    ResourceStats getResourceStats(Integer teacherId);
+
+    InteractStats getInteractStats(Integer teacherId);
 }
