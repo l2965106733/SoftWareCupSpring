@@ -1,10 +1,10 @@
 package com.dream.softwarecupspring.Controller;
 
 import com.dream.softwarecupspring.Service.PublicService;
-import com.dream.softwarecupspring.pojo.LoginInfo;
-import com.dream.softwarecupspring.pojo.ResetQueryParam;
-import com.dream.softwarecupspring.pojo.Result;
-import com.dream.softwarecupspring.pojo.User;
+import com.dream.softwarecupspring.pojo.User.LoginInfo;
+import com.dream.softwarecupspring.pojo.Common.ResetQueryParam;
+import com.dream.softwarecupspring.pojo.Common.Result;
+import com.dream.softwarecupspring.pojo.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;

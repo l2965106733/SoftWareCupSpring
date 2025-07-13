@@ -1,6 +1,6 @@
 package com.dream.softwarecupspring.Controller;
 
-import com.dream.softwarecupspring.pojo.Result;
+import com.dream.softwarecupspring.pojo.Common.Result;
 import com.dream.softwarecupspring.utils.AliyunOSSOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RestController
 public class UploadController {

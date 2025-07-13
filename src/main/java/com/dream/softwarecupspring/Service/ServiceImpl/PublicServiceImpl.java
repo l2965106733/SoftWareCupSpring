@@ -2,9 +2,9 @@ package com.dream.softwarecupspring.Service.ServiceImpl;
 
 import com.dream.softwarecupspring.Mapper.PublicMapper;
 import com.dream.softwarecupspring.Service.PublicService;
-import com.dream.softwarecupspring.pojo.LoginInfo;
-import com.dream.softwarecupspring.pojo.ResetQueryParam;
-import com.dream.softwarecupspring.pojo.User;
+import com.dream.softwarecupspring.pojo.User.LoginInfo;
+import com.dream.softwarecupspring.pojo.Common.ResetQueryParam;
+import com.dream.softwarecupspring.pojo.User.User;
 import com.dream.softwarecupspring.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

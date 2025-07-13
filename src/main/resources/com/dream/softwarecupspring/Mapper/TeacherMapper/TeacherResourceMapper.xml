@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dream.softwarecupspring.Mapper.TeacherMapper.TeacherResourceMapper">
+
+    <insert id="insertResource" parameterType="com.dream.softwarecupspring.pojo.Resource.Resource" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO resource (
+            teacher_id,
+            resource_name,
+            resource_url,
+            resource_type,
+            file_size,
+            upload_time,
+            description,
+            download_count
+        ) VALUES (
+                     #{teacherId},
+                     #{resourceName},
+                     #{resourceUrl},
+                     #{resourceType},
+                     #{fileSize},
+                     #{uploadTime},
+                     #{description},
+                     #{downloadCount}
+                 )
+    </insert>
+
+    <update id="updateResource" parameterType="com.dream.softwarecupspring.pojo.Resource.Resource">
+        UPDATE resource
+        SET
+            resource_name = #{resourceName},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectResourcesByTeacherId" resultType="com.dream.softwarecupspring.pojo.Resource.Resource">
+        SELECT *
+        FROM resource
+        WHERE teacher_id = #{teacherId}
+        ORDER BY upload_time DESC
+    </select>
+
+    <delete id="deleteResourceById" parameterType="long">
+        DELETE FROM resource WHERE id = #{resourceId}
+    </delete>
+
+
+</mapper>
