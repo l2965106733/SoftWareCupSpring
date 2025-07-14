@@ -1,5 +1,6 @@
 package com.dream.softwarecupspring.Service.StudentService;
 
+import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecordDTO;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface StudentStudyService {
 
     Map<String, Object> getStudyStats(Integer studentId);
 
+    Object getAiQuestions(Long studentId, int limit);
+
+    void recordAiQuestion(AiQuestion aiQuestion);
 }

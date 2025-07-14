@@ -17,16 +17,6 @@ public class StudentInteractController {
     @Autowired
     private StudentInteractService studentInteractService;
 
-    @PostMapping("/aiQuestion")
-    public Result recordAiQuestion(@RequestBody AiQuestion aiQuestion) {
-        studentInteractService.recordAiQuestion(aiQuestion);
-        return Result.success("AI提问记录成功");
-    }
-
-    @GetMapping("/aiQuestions/{studentId}")
-    public Result getAiQuestions(@PathVariable Long studentId, @RequestParam(defaultValue = "50") int limit) {
-        return Result.success(studentInteractService.getAiQuestions(studentId, limit));
-    }
 
     @PostMapping("/questionSubmit")
     public Result submitQuestion(@RequestBody StudentQuestion studentQuestion) {

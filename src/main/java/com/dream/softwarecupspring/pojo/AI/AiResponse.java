@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AiResponse {
-    private Integer code;
+    private String status;
     private String data;
 }

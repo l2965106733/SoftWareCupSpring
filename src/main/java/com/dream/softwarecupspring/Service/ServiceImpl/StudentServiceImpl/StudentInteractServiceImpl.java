@@ -18,12 +18,6 @@ public class StudentInteractServiceImpl implements StudentInteractService {
     @Autowired
     private StudentInteractMapper studentInteractMapper;
 
-    @Override
-    public void recordAiQuestion(AiQuestion aiQuestion) {
-        aiQuestion.setCreatedTime(LocalDateTime.now());
-        studentInteractMapper.insertAiQuestion(aiQuestion);
-    }
-
 
     @Override
     public void submitQuestion(StudentQuestion studentQuestion) {
@@ -104,10 +98,7 @@ public class StudentInteractServiceImpl implements StudentInteractService {
         return studentInteractMapper.getRecentActivities(studentId);
     }
 
-    @Override
-    public List<Map<String, Object>> getAiQuestions(Long studentId, int limit) {
-        return studentInteractMapper.getAiQuestions(studentId, limit);
-    }
+
 
     @Override
     public Object getTeacherId(Long studentId) {

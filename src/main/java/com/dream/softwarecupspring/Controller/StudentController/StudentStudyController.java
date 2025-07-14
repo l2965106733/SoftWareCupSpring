@@ -1,6 +1,7 @@
 package com.dream.softwarecupspring.Controller.StudentController;
 
 import com.dream.softwarecupspring.Service.StudentService.StudentStudyService;
+import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.AI.AiResponse;
 import com.dream.softwarecupspring.pojo.AI.ChatQueryParam;
 import com.dream.softwarecupspring.pojo.Common.Result;
@@ -48,6 +49,17 @@ public class StudentStudyController {
     public Result getChat(@RequestBody ChatQueryParam chatQueryParam) {
         AiResponse response = aiUtils.callAI("generateStudentChat", chatQueryParam, "/ai");
         return Result.success(response.getData());
+    }
+
+    @GetMapping("/aiQuestions/{studentId}")
+    public Result getAiQuestions(@PathVariable Long studentId, @RequestParam(defaultValue = "50") int limit) {
+        return Result.success(studentStudyService.getAiQuestions(studentId, limit));
+    }
+
+    @PostMapping("/aiQuestion")
+    public Result recordAiQuestion(@RequestBody AiQuestion aiQuestion) {
+        studentStudyService.recordAiQuestion(aiQuestion);
+        return Result.success("AI提问记录成功");
     }
 
     @GetMapping("/courseware/{studentId}")

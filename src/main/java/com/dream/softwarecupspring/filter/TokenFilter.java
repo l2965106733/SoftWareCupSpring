@@ -47,34 +47,26 @@ public class TokenFilter implements Filter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return; // 令牌为空时直接返回 401 错误
         }
-
         // 令牌校验逻辑
         try {
-            Claims claims = JwtUtils.parseToken(token);  // 解析 token
-            Integer userId = Integer.valueOf(claims.get("id").toString());  // 提取用户 ID
-            CurrentHolder.setCurrentId(userId);  // 设置当前用户 ID
-            userActivityTracker.recordLogin(Long.valueOf(userId));  // 记录用户活动日志
+            Claims claims = JwtUtils.parseToken(token);
+            Integer userId = Integer.valueOf(claims.get("id").toString());
+            CurrentHolder.setCurrentId(userId);
+            userActivityTracker.recordLogin(Long.valueOf(userId));
             log.info("✅ 令牌校验成功，用户ID: {}", userId);
 
-            // 放行请求
             filterChain.doFilter(request, response);
 
-        } catch (ExpiredJwtException e) {
-            log.error("❌ Token 过期：{}", e.getMessage());
+        } catch (ExpiredJwtException | SignatureException e) {
+            // Token 相关异常
+            log.error("❌ Token 错误：{}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return; // 如果 Token 过期，直接返回 401 错误
-        } catch (SignatureException e) {
-            log.error("❌ Token 签名无效：{}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return; // 如果签名无效，直接返回 401 错误
+            return;
+
         } catch (Exception e) {
-            log.error("❌ Token 无效：{}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return; // 其他 Token 无效情况，返回 401 错误
-        } finally {
-            // 清除当前线程上下文用户信息
-            CurrentHolder.remove();
-            log.info("🧹 当前用户信息已清除");
+            // 非 token 异常，不处理，让后面的异常处理器来兜底
+            log.error("⚠ 业务异常：{}", e.getMessage());
+            throw e;  // 👈 交给全局异常处理器处理
         }
     }
 

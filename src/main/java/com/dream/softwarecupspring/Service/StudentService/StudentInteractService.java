@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface StudentInteractService {
-    void recordAiQuestion(AiQuestion aiQuestion);
-
     void submitQuestion(StudentQuestion studentQuestion);
 
     List<StudentQuestion> getMyQuestions(Integer studentId);
@@ -30,8 +28,6 @@ public interface StudentInteractService {
     Object getHomeStats(Long studentId);
 
     Object getRecentActivities(Long studentId);
-
-    Object getAiQuestions(Long studentId, int limit);
 
     Object getTeacherId(Long studentId);
 }

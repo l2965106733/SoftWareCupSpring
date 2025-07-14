@@ -1,5 +1,6 @@
 package com.dream.softwarecupspring.Mapper.StudentMapper;
 
+import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.Homework.StudentAnswer;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecord;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,6 +36,9 @@ public interface StudentStudyMapper {
 
     @Select("select teacher_id from teacher_student where student_id = #{studentId}")
     Integer selectTeacherIdByStudentId(Integer studentId);
+
+    List<Map<String, Object>> getAiQuestions(@Param("studentId") Long studentId, @Param("limit") int limit);
+    void insertAiQuestion(AiQuestion aiQuestion);
 
     List<Map<String, Object>> getStudyRecords(Long studentId, String type);
 

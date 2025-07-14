@@ -21,7 +21,6 @@ public interface StudentInteractMapper {
     Double getAverageRating(Integer studentId);
     List<Map<String, Object>> getQuestionsByType(Integer studentId);
     List<StudentQuestion> getRecentQuestions(Integer studentId);
-    void insertAiQuestion(AiQuestion aiQuestion);
     List<StudentQuestion> getRatedQuestionsByStudentId(Integer studentId);
     Object getTotalRatingsCount(Integer studentId);
     List<RatingCount> getRatingDistribution(Integer studentId);
@@ -29,7 +28,6 @@ public interface StudentInteractMapper {
     List<StudentQuestion> getRecentRatedQuestions(Integer studentId);
     Map<String, Object> getHomeStats(@Param("studentId") Long studentId);
     List<Map<String, Object>> getRecentActivities(@Param("studentId") Long studentId);
-    List<Map<String, Object>> getAiQuestions(@Param("studentId") Long studentId, @Param("limit") int limit);
 
     Object getTeacherIdByStudentId(Long studentId);
 }

@@ -2,6 +2,7 @@ package com.dream.softwarecupspring.Service.ServiceImpl.StudentServiceImpl;
 
 import com.dream.softwarecupspring.Mapper.StudentMapper.StudentStudyMapper;
 import com.dream.softwarecupspring.Service.StudentService.StudentStudyService;
+import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecord;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,16 @@ public class StudentStudyServiceImpl implements StudentStudyService {
         stats.put("studyDays", studentStudyMapper.getStudyDaysCount(studentId));
         stats.put("recentStudyRecords", studentStudyMapper.getRecentStudyRecords(studentId));
         return stats;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAiQuestions(Long studentId, int limit) {
+        return studentStudyMapper.getAiQuestions(studentId, limit);
+    }
+
+    @Override
+    public void recordAiQuestion(AiQuestion aiQuestion) {
+        aiQuestion.setCreatedTime(LocalDateTime.now());
+        studentStudyMapper.insertAiQuestion(aiQuestion);
     }
 }

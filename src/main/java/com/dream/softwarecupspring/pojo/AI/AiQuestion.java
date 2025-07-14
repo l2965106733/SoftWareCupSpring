@@ -16,7 +16,8 @@ public class AiQuestion {
     private String category;        // 问题分类：java, vue, database, other
     private Integer satisfaction;   // 满意度评分（1-5）
     private LocalDateTime createdTime;
-
+    private String questionContent;
+    private String aiResponse;
     // 查询关联字段
     private String studentName;     // 学生姓名
 }

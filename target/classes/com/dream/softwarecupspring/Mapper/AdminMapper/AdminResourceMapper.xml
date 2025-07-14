@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dream.softwarecupspring.Mapper.AdminMapper.AdminResourceMapper">
+
+    <select id="getAllResources" resultType="com.dream.softwarecupspring.pojo.Resource.Resource">
+        SELECT r.id,
+               r.resource_name AS resourceName,
+               r.resource_url AS resourceUrl,
+               r.resource_type AS resourceType,
+               r.file_size AS fileSize,
+               r.description,
+               r.teacher_id AS teacherId,
+               u.name AS teacherName,
+               DATE_FORMAT(r.upload_time, '%Y-%m-%d %H:%i:%s') AS uploadTime,
+               r.download_count AS downloadCount,
+               r.view_count AS viewCount
+        FROM resource r
+                 JOIN users u ON r.teacher_id = u.id
+        ORDER BY r.upload_time DESC
+    </select>
+
+    <delete id="deleteResource">
+        DELETE FROM resource WHERE id = #{resourceId}
+    </delete>
+
+    <update id="updateResource" parameterType="com.dream.softwarecupspring.pojo.Resource.Resource">
+        UPDATE resource
+        SET resource_name = #{resourceName},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getTotalResources" resultType="long">
+        SELECT COUNT(*) FROM resource
+    </select>
+
+    <!-- 统计：资源总大小（byte） -->
+    <select id="getTotalSize" resultType="long">
+        SELECT SUM(file_size) FROM resource
+    </select>
+
+    <!-- 统计：总下载量 -->
+    <select id="getTotalDownloads" resultType="long">
+        SELECT SUM(download_count) FROM resource
+    </select>
+
+    <!-- 统计：总浏览量 -->
+    <select id="getTotalViews" resultType="long">
+        SELECT SUM(view_count) FROM resource
+    </select>
+
+    <!-- 统计：不同教师上传资源的教师数 -->
+    <select id="getTeacherCount" resultType="long">
+        SELECT COUNT(DISTINCT teacher_id) FROM resource
+    </select>
+
+
+</mapper>
