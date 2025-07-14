@@ -33,10 +33,24 @@ public class UserActivityInterceptor implements HandlerInterceptor {
         // 获取会话结束时间
         LocalDateTime sessionEnd = LocalDateTime.now();
 
-        // 从 CurrentHolder 获取当前用户 ID
-        Long userId = Long.valueOf(CurrentHolder.getCurrentId()); // 从 CurrentHolder 获取当前登录用户的 ID
+        // 从 CurrentHolder 获取当前用户 ID，注意处理空值
+        Long userId = null;
+        try {
+            userId = Long.valueOf(CurrentHolder.getCurrentId());  // 从 CurrentHolder 获取当前用户 ID
+        } catch (NullPointerException e) {
+            // 如果没有用户 ID，设置为 null 或 0L
+            userId = 0L;  // 或者 null，取决于你对未登录用户的处理方式
+        }
+
+        // 如果是登录、注册等不需要记录用户活动的页面，直接返回
+        String requestURI = request.getRequestURI();
+        if (requestURI.contains("/login") || requestURI.contains("/register")) {
+            return;  // 登录/注册请求不记录用户活动
+        }
 
         // 记录会话时长
-        userActivityTracker.recordSessionEnd(userId, sessionStart, sessionEnd);
+        if (userId != null) {
+            userActivityTracker.recordSessionEnd(userId, sessionStart, sessionEnd);
+        }
     }
 }
