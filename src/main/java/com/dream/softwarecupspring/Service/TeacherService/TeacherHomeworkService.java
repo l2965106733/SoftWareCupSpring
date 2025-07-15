@@ -10,7 +10,7 @@ import java.util.Map;
 public interface TeacherHomeworkService {
     List<Question> saveQuestion(List<Question> questions);
 
-    void publishHomework(Homework homeworkQueryParams);
+    Integer publishHomework(Homework homeworkQueryParams);
 
     List<Homework> getHomeworkList(Integer teacherId);
 

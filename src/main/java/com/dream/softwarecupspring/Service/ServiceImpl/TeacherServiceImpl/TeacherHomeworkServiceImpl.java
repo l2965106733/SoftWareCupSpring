@@ -44,7 +44,7 @@ public class TeacherHomeworkServiceImpl implements TeacherHomeworkService {
      */
     @Override
     @Transactional
-    public void publishHomework(Homework param) {
+    public Integer publishHomework(Homework param) {
         param.setCreatedTime(LocalDateTime.now());
         param.setUpdatedTime(LocalDateTime.now());
         param.setStatus(1);
@@ -71,6 +71,7 @@ public class TeacherHomeworkServiceImpl implements TeacherHomeworkService {
                 .map(sid -> new StudentHomework(homeworkId, sid, 0,LocalDateTime.now()))
                 .collect(Collectors.toList());
         studentHomeworkMapper.insertStudentHomework(studentHomeworkList);
+        return studentIds.size();
     }
 
     // ======================== 作业查看与批改 ========================

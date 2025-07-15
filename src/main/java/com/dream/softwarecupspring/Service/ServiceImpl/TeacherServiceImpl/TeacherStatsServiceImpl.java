@@ -81,11 +81,10 @@ public class TeacherStatsServiceImpl implements TeacherStatsService {
         stats.setSubmitRate(teacherStatsMapper.getSubmitRate(teacherId));
 
         Map<String, Integer> scoreDist = new LinkedHashMap<>();
-        scoreDist.put("90-100分", teacherStatsMapper.getScoreRangeCount(teacherId, 90, 100));
-        scoreDist.put("80-89分", teacherStatsMapper.getScoreRangeCount(teacherId, 80, 89));
-        scoreDist.put("70-79分", teacherStatsMapper.getScoreRangeCount(teacherId, 70, 79));
-        scoreDist.put("60-69分", teacherStatsMapper.getScoreRangeCount(teacherId, 60, 69));
-        scoreDist.put("60分以下", teacherStatsMapper.getScoreRangeCount(teacherId, 0, 59));
+        scoreDist.put("优秀(得分90%以上)", teacherStatsMapper.getScoreRangeCount(teacherId, 0.9, 1.0));
+        scoreDist.put("良好(得分60%~90%)", teacherStatsMapper.getScoreRangeCount(teacherId, 0.6, 0.9));
+        scoreDist.put("不及格(得分30%~60%)", teacherStatsMapper.getScoreRangeCount(teacherId, 0.3, 0.6));
+        scoreDist.put("极低(得分30%以下)", teacherStatsMapper.getScoreRangeCount(teacherId, 0.0, 0.3));
         stats.setScoreDistribution(scoreDist);
 
         List<RecentHomework> recent = teacherStatsMapper.getRecentHomework(teacherId);

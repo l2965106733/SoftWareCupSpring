@@ -28,8 +28,8 @@ public class TeacherHomeworkController {
 
     @PostMapping("/publish")
     public Result publishHomework(@RequestBody Homework homework) {
-        teacherHomeworkService.publishHomework(homework);
-        return Result.success();
+        Integer studentCount = teacherHomeworkService.publishHomework(homework);
+        return Result.success(studentCount);
     }
 
     @PostMapping("/grade")

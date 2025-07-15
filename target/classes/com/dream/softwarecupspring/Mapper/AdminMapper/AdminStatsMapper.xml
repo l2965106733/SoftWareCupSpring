@@ -16,60 +16,6 @@
         WHERE user_id = #{userId} AND login_date = #{loginDate}
     </update>
 
-    <insert id="insert" parameterType="com.dream.softwarecupspring.pojo.System.SystemMetrics">
-        INSERT INTO system_metrics (
-            cpu_usage, memory_usage, disk_usage,
-            network_traffic, database_connections, api_requests,
-            response_time, error_rate, recorded_time
-        ) VALUES (
-                     #{cpuUsage}, #{memoryUsage}, #{diskUsage},
-                     #{networkTraffic}, #{databaseConnections}, #{apiRequests},
-                     #{responseTime}, #{errorRate}, #{recordedTime}
-                 )
-    </insert>
-
-    <insert id="insertSystemLog" parameterType="com.dream.softwarecupspring.pojo.System.SystemLog" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO system_logs (
-            user_id,
-            action,
-            resource,
-            ip_address,
-            user_agent,
-            created_time
-        ) VALUES (
-                     #{userId},
-                     #{action},
-                     #{resource},
-                     #{ipAddress},
-                     #{userAgent},
-                     #{createdTime}
-                 )
-    </insert>
-
-    <insert id="insertSystemMetrics" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO system_metrics (
-            cpu_usage,
-            memory_usage,
-            disk_usage,
-            network_traffic,
-            database_connections,
-            api_requests,
-            response_time,
-            error_rate,
-            recorded_time
-        ) VALUES (
-                     #{cpuUsage},
-                     #{memoryUsage},
-                     #{diskUsage},
-                     #{networkTraffic},
-                     #{databaseConnections},
-                     #{apiRequests},
-                     #{responseTime},
-                     #{errorRate},
-                     #{recordedTime}
-                 )
-    </insert>
-
     <insert id="insertUserActivity" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_activity (
             user_id, login_date, session_duration,

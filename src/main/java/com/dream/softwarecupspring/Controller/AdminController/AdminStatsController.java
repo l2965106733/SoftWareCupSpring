@@ -3,8 +3,6 @@ package com.dream.softwarecupspring.Controller.AdminController;
 import com.dream.softwarecupspring.Service.AdminService.AdminStatsService;
 import com.dream.softwarecupspring.pojo.Common.Result;
 import com.dream.softwarecupspring.pojo.Resource.ResourceAccessLog;
-import com.dream.softwarecupspring.pojo.System.SystemLog;
-import com.dream.softwarecupspring.pojo.System.SystemMetrics;
 import com.dream.softwarecupspring.pojo.User.UserActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +20,6 @@ public class AdminStatsController {
     @Autowired
     private AdminStatsService adminStatsService;
 
-    // 日志与监控写入
-    @PostMapping("/systemLog")
-    public Result insertSystemLog(@RequestBody SystemLog log) {
-        adminStatsService.insertSystemLog(log);
-        return Result.success();
-    }
-
-    @PostMapping("/systemMetrics")
-    public Result insertSystemMetrics(@RequestBody SystemMetrics metrics) {
-        adminStatsService.insertSystemMetrics(metrics);
-        return Result.success();
-    }
 
     @PostMapping("/userActivity")
     public Result insertUserActivity(@RequestBody UserActivity activity) {

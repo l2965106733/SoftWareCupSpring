@@ -10,6 +10,7 @@
         answer,
         `explain`,
         type,
+        knowledge,
         score,
         created_time,
         updated_time
@@ -21,6 +22,7 @@
             #{item.answer},
             #{item.explain},
             #{item.type},
+            #{item.knowledge},
             #{item.score},
             #{item.createdTime},
             #{item.updatedTime}

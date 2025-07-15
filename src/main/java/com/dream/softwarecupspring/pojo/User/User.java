@@ -17,7 +17,6 @@ public class User {
         private Integer gender;         // 性别
         private Integer role;
         private String identifier;     // 学号/教师号/管理员号
-        private String subject;        // 教师教学科目（仅教师）
         private LocalDateTime createTime; // 注册时间
         private LocalDateTime updateTime; // 最后修改时间
 }

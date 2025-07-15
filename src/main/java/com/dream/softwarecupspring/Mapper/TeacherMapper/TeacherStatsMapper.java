@@ -34,7 +34,7 @@ public interface TeacherStatsMapper {
     Integer getGradedHomework(Integer teacherId);
     Integer getPendingGrade(Integer teacherId);
     Double getSubmitRate(Integer teacherId);
-    Integer getScoreRangeCount(Integer teacherId, Integer min, Integer max);
+    Integer getScoreRangeCount(Integer teacherId, Double min, Double max);
     List<RecentHomework> getRecentHomework(Integer teacherId);
 
     List<StudentSummary> getStudentSummaries(Integer teacherId);

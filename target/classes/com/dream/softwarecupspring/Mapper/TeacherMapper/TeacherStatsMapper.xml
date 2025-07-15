@@ -146,7 +146,7 @@
         FROM student_homework sh
                  JOIN homework h ON sh.homework_id = h.id
         WHERE h.teacher_id = #{teacherId}
-          AND sh.total_score BETWEEN #{min} AND #{max}
+          AND sh.total_score / h.total_score BETWEEN #{min} AND #{max}
     </select>
 
     <select id="getRecentHomework" resultType="com.dream.softwarecupspring.pojo.Homework.RecentHomework">
@@ -178,7 +178,7 @@
                  LEFT JOIN student_homework sh ON u.id = sh.student_id
                  JOIN teacher_student ts ON u.id = ts.student_id
         WHERE ts.teacher_id = #{teacherId} AND u.role = 1
-        GROUP BY u.id, u.name, u.identifier, u.subject
+        GROUP BY u.id, u.name, u.identifier
     </select>
 
     <select id="getTotalResources" resultType="long">
@@ -258,7 +258,6 @@
             -- 教师基本信息
             u.id AS id,
             u.name AS name,
-            u.subject AS department,
 
             -- 教学统计
             (SELECT COUNT(*) FROM teacher_student WHERE teacher_id = #{teacherId}) AS studentCount,

@@ -14,6 +14,7 @@ public class Question {
     private String content;       // 题目内容
     private String answer;        // 参考答案
     private String explain;       // 解析说明
+    private String knowledge;
     private String type;    // 题目类型（枚举）
     private Integer score;        // 分值
     private LocalDateTime createdTime; // 注册时间

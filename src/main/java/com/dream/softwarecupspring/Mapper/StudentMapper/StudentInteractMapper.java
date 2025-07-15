@@ -1,6 +1,5 @@
 package com.dream.softwarecupspring.Mapper.StudentMapper;
 
-import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.Homework.RatingCount;
 import com.dream.softwarecupspring.pojo.Interact.StudentQuestion;
 import org.apache.ibatis.annotations.Mapper;

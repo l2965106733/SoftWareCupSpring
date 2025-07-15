@@ -1,7 +1,6 @@
 package com.dream.softwarecupspring.Controller.StudentController;
 
 import com.dream.softwarecupspring.Service.StudentService.StudentInteractService;
-import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.Common.Result;
 import com.dream.softwarecupspring.pojo.Interact.StudentQuestion;
 import org.springframework.beans.factory.annotation.Autowired;

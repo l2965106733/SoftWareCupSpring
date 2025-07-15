@@ -1,7 +1,6 @@
 package com.dream.softwarecupspring.Mapper.StudentMapper;
 
 import com.dream.softwarecupspring.pojo.AI.AiQuestion;
-import com.dream.softwarecupspring.pojo.Homework.StudentAnswer;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

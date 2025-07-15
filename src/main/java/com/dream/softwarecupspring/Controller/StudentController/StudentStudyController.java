@@ -48,6 +48,7 @@ public class StudentStudyController {
     @PostMapping("/chat")
     public Result getChat(@RequestBody ChatQueryParam chatQueryParam) {
         AiResponse response = aiUtils.callAI("generateStudentChat", chatQueryParam, "/ai");
+
         return Result.success(response.getData());
     }
 
@@ -58,6 +59,7 @@ public class StudentStudyController {
 
     @PostMapping("/aiQuestion")
     public Result recordAiQuestion(@RequestBody AiQuestion aiQuestion) {
+        System.out.println(111);
         studentStudyService.recordAiQuestion(aiQuestion);
         return Result.success("AI提问记录成功");
     }

@@ -136,8 +136,8 @@
     </select>
 
     <insert id="insertAiQuestion" parameterType="com.dream.softwarecupspring.pojo.AI.AiQuestion">
-        INSERT INTO student_ai_questions (student_id, question_content, ai_response, created_time)
-        VALUES (#{studentId}, #{questionContent}, #{aiResponse}, #{createdTime})
+        INSERT INTO student_ai_questions (student_id, question_content,answer, created_time)
+        VALUES (#{studentId}, #{questionContent},#{answer}, #{createdTime})
     </insert>
 
     <select id="getStudyRecords" resultType="map">
@@ -166,7 +166,7 @@
     </select>
 
     <select id="getAiQuestions" resultType="map">
-        SELECT id, question_content AS questionContent, ai_response AS aiResponse, created_time AS createdTime
+        SELECT id, question_content AS questionContent, answer AS aiResponse, created_time AS createdTime
         FROM student_ai_questions
         WHERE student_id = #{studentId}
         ORDER BY created_time DESC

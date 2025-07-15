@@ -1,18 +1,12 @@
 package com.dream.softwarecupspring.Service.AdminService;
 
 import com.dream.softwarecupspring.pojo.Resource.ResourceAccessLog;
-import com.dream.softwarecupspring.pojo.System.SystemLog;
-import com.dream.softwarecupspring.pojo.System.SystemMetrics;
 import com.dream.softwarecupspring.pojo.User.UserActivity;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminStatsService {
-    void insertSystemLog(SystemLog log);
-
-    void insertSystemMetrics(SystemMetrics metrics);
-
     void insertUserActivity(UserActivity activity);
 
     void insertResourceAccessLog(ResourceAccessLog log);

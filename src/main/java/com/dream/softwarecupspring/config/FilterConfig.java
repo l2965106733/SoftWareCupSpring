@@ -9,15 +9,15 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 @Configuration
 public class FilterConfig {
 
-    @Autowired
-    private TokenFilter tokenFilter;
+//    @Autowired
+//    private TokenFilter tokenFilter;
 
-    @Bean
-    public FilterRegistrationBean<TokenFilter> loggingFilter() {
-        FilterRegistrationBean<TokenFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(tokenFilter);  // 让 Spring 自动管理 TokenFilter
-        registrationBean.addUrlPatterns("/*");   // 拦截所有路径
-        registrationBean.setOrder(1);            // 优先级
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<TokenFilter> loggingFilter() {
+//        FilterRegistrationBean<TokenFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(tokenFilter);  // 让 Spring 自动管理 TokenFilter
+//        registrationBean.addUrlPatterns("/*");   // 拦截所有路径
+//        registrationBean.setOrder(1);            // 优先级
+//        return registrationBean;
+//    }
 }
