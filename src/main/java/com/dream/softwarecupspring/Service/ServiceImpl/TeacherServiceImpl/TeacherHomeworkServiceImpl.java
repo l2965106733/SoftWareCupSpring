@@ -114,8 +114,6 @@ public class TeacherHomeworkServiceImpl implements TeacherHomeworkService {
         studentHomework.setUpdatedTime(LocalDateTime.now());
         studentHomeworkMapper.updateHomeworkById(studentHomework);
         StudentHomework homework = studentHomeworkMapper.selectHomeworkByHomeworkId(studentHomework.getHomeworkId(), studentHomework.getStudentId());
-        System.out.println(homework);
-        System.out.println(studentHomework);
         updateStudentAnswers(studentHomework);
         if (homework == null) {
             return "作业提交记录不存在";

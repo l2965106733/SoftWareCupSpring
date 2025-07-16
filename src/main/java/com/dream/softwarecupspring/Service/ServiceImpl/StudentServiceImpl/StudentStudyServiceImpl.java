@@ -26,11 +26,11 @@ public class StudentStudyServiceImpl implements StudentStudyService {
     @Override
     public boolean reportStudyRecord(StudyRecordDTO dto) {
         StudyRecord record = studentStudyMapper.findByStudentAndResource(dto.getStudentId(), dto.getResourceId());
-        if ("start_study".equals(dto.getAction())) {
-            studentStudyMapper.updateResourceViewCount();
+        if ("download".equals(dto.getAction())) {
+            studentStudyMapper.updateResourceDownloadCount(dto.getResourceId());
         }
-        else if ("download".equals(dto.getAction())) {
-            studentStudyMapper.updateResourceDownloadCount();
+        else {
+            studentStudyMapper.updateResourceViewCount(dto.getResourceId());
         }
         if (record == null && ("start_study".equals(dto.getAction()) || "download".equals(dto.getAction()))) {
             StudyRecord newRecord = new StudyRecord();

@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,11 +71,11 @@ public class TeacherResourceController {
         byte[] fileBytes = Files.readAllBytes(tempFile.toPath());
         String ossUrl = aliyunOSSOperator.upload(fileBytes, fileName);
 
-//        Long teacherId = Long.valueOf(CurrentHolder.getCurrentId());
-        Long teacherId = 56L;
+        Long teacherId = Long.valueOf(CurrentHolder.getCurrentId());
         Resource resource = new Resource();
         resource.setTeacherId(teacherId);
-        resource.setResourceName("教学计划.docx");
+        String temp_name = "AI教学计划" + LocalDateTime.now() + ".docx";
+        resource.setResourceName(temp_name);
         resource.setResourceUrl(ossUrl);
         resource.setResourceType("docx");
         resource.setDescription("由 AI 自动生成的教学计划");
@@ -85,5 +86,4 @@ public class TeacherResourceController {
         result.put("docxUrl", ossUrl);
         return Result.success(result);
     }
-
 }

@@ -50,7 +50,7 @@
     </select>
 
     <select id="getAvgScore" resultType="double">
-        SELECT ROUND(AVG(sh.total_score), 2)
+        SELECT ROUND(AVG(sh.total_score/h.total_score), 2)
         FROM homework h
                  JOIN student_homework sh ON h.id = sh.homework_id
         WHERE h.teacher_id = #{teacherId} AND (sh.status = 1 || sh.status = 2)
@@ -168,7 +168,7 @@
                u.identifier AS studentId,
                ROUND(COALESCE(SUM(ssr.study_duration) / COUNT(DISTINCT ssr.resource_id) / 60, 0)) AS progress,
                ROUND(AVG(sh.total_score), 1) AS avgScore,
-               COUNT(CASE WHEN sh.status = 1 or sh.status = 2 THEN 1 END) AS homeworkCount,
+               (SELECT COUNT(*) FROM student_homework WHERE student_homework.student_id = u.id AND (student_homework.status = 1 OR student_homework.status = 2)) AS homeworkCount,
                (SELECT COUNT(*) FROM homework WHERE teacher_id = #{teacherId}) AS totalHomework,
                MAX(ssr.updated_time) AS lastActive,
                MAX(ssr.view_count) AS viewCount,
@@ -271,7 +271,7 @@
                 WHERE h.teacher_id = #{teacherId}
             ) AS completionRate,
             (
-                SELECT ROUND(AVG(sh.total_score), 1)
+                SELECT ROUND(AVG(sh.total_score/h.total_score), 1)
                 FROM student_homework sh
                          JOIN homework h ON sh.homework_id = h.id
                 WHERE h.teacher_id = #{teacherId}

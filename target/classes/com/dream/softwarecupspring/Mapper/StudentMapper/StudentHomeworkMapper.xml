@@ -11,6 +11,7 @@
             sh.homework_id,
             sh.student_id,
             sh.status,
+            h.remark,
             sh.total_score,                    -- 学生得分
             sh.feedback,                 -- 教师反馈
             sh.created_time,             -- 创建时间
@@ -23,12 +24,15 @@
         LEFT JOIN homework h ON sh.homework_id = h.id
         LEFT JOIN users u ON u.id = h.teacher_id
         WHERE sh.student_id = #{studentId}
+        order by h.end_time
     </select>
 
     <select id="getHomeworkDetailById" resultType="map">
         SELECT
             q.id,
             q.content,
+            q.answer,
+            q.explain,
             q.type,
             q.score as totalScore,
             sa.answer AS studentAnswer,
@@ -82,7 +86,7 @@
     </select>
 
     <select id="getAverageScore" resultType="double">
-        SELECT IFNULL(AVG(total_score), 0) FROM student_homework WHERE student_id = #{studentId}
+        SELECT IFNULL(AVG(sh.total_score/h.total_score), 0) FROM student_homework sh join homework h on sh.homework_id = h.id where student_id = #{studentId}
     </select>
 
     <select id="getBestScore" resultType="int">
