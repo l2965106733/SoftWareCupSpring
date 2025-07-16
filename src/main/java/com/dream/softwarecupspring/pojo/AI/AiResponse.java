@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class AiResponse {
     private String status;
     private String data;
+    private String knowledge;
 }

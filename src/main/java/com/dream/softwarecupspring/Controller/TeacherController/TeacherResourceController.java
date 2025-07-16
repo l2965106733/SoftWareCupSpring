@@ -59,11 +59,7 @@ public class TeacherResourceController {
     @PostMapping("/aiTeachingPlan")
     public Result generateTeachingPlan(@RequestBody TeachingPlanQueryParam teachingPlanQueryParam) throws Exception {
         AiResponse response = aiUtils.callAI("generateTeachingPlan", teachingPlanQueryParam, "/ai");
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> dataMap = mapper.readValue(response.getData(), new TypeReference<>() {});
-        String docxUrl = dataMap.get("docxUrl");
-
+        String docxUrl = response.getData();
         URL url = new URL(docxUrl);
         File tempFile = File.createTempFile("teaching_plan_", ".docx");
         try (InputStream in = url.openStream()) {
@@ -74,7 +70,8 @@ public class TeacherResourceController {
         byte[] fileBytes = Files.readAllBytes(tempFile.toPath());
         String ossUrl = aliyunOSSOperator.upload(fileBytes, fileName);
 
-        Long teacherId = Long.valueOf(CurrentHolder.getCurrentId());
+//        Long teacherId = Long.valueOf(CurrentHolder.getCurrentId());
+        Long teacherId = 56L;
         Resource resource = new Resource();
         resource.setTeacherId(teacherId);
         resource.setResourceName("教学计划.docx");

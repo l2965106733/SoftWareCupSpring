@@ -13,7 +13,8 @@
             file_size,
             upload_time,
             description,
-            download_count
+            download_count,
+            view_count
         ) VALUES (
                      #{teacherId},
                      #{resourceName},
@@ -22,7 +23,8 @@
                      #{fileSize},
                      #{uploadTime},
                      #{description},
-                     #{downloadCount}
+                     #{downloadCount},
+                     #{viewCount}
                  )
     </insert>
 

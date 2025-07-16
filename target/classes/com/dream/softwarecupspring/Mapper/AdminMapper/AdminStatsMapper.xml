@@ -53,10 +53,6 @@
                 (SELECT COUNT(*) FROM user_activity WHERE login_date = CURDATE()) AS totalLogins,
                 (SELECT COUNT(DISTINCT user_id) FROM user_activity WHERE login_date = CURDATE()) AS uniqueLogins
     </select>
-    <!--  系统资源占用信息（当前最新记录）  -->
-    <select id="getSystemUsage" resultType="map"> SELECT cpu_usage AS cpuUsage, memory_usage AS memoryUsage, disk_usage AS diskUsage, network_traffic AS networkTraffic, database_connections AS databaseConnections, api_requests AS apiRequests FROM system_metrics ORDER BY recorded_time DESC LIMIT 1 </select>
-    <!--  系统健康状态  -->
-    <select id="getSystemHealth" resultType="map"> SELECT CASE WHEN MAX(error_rate) > 5 THEN 'critical' WHEN MAX(error_rate) > 1 THEN 'warning' ELSE 'healthy' END AS status, ROUND(AVG(response_time), 2) AS responseTime, ROUND(AVG(error_rate), 2) AS errorRate, 99.8 AS availability FROM system_metrics WHERE recorded_time >= NOW() - INTERVAL 1 DAY </select>
 
     <select id="selectActiveUserTrendByDay" resultType="map">
         SELECT

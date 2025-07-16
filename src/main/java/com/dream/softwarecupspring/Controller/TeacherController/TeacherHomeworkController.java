@@ -71,6 +71,9 @@ public class TeacherHomeworkController {
         AiResponse response = aiUtils.callAI("generateQuestion", tquestionQueryParam, "/ai");
         String rawText = response.getData();
         List<Question> questions = parseQuestions(rawText, tquestionQueryParam.getType());
+        for (Question question : questions) {
+            question.setKnowledge(response.getKnowledge());
+        }
         return Result.success(questions);
     }
 

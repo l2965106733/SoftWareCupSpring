@@ -8,10 +8,10 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 
 @Configuration
 public class FilterConfig {
-
+//
 //    @Autowired
 //    private TokenFilter tokenFilter;
-
+//
 //    @Bean
 //    public FilterRegistrationBean<TokenFilter> loggingFilter() {
 //        FilterRegistrationBean<TokenFilter> registrationBean = new FilterRegistrationBean<>();

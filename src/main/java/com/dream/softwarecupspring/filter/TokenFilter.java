@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class TokenFilter {// implements Filter {
+public class TokenFilter{ // implements Filter {
 //
 //    private final UserActivityTracker userActivityTracker;
 //
@@ -34,7 +34,7 @@ public class TokenFilter {// implements Filter {
 //        String requestURI = request.getRequestURI();
 //
 //        // ✅ 登录/注册请求不需要 Token 校验，直接放行
-//        if (requestURI.contains("/login") || requestURI.contains("/register")) {
+//        if (requestURI.contains("/login")) {
 //            log.info("🔓 登录/注册请求，放行: {}", requestURI);
 //            filterChain.doFilter(request, response); // 放行，不进行 token 校验
 //            return;  // 直接返回，跳过 Token 校验

@@ -17,7 +17,7 @@ public class Resource {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime uploadTime;
     private String description;
-    private Integer downloadCount;
+    private Integer downloadCount = 0;
     private String teacherName;
-    private Integer viewCount;
+    private Integer viewCount = 0;
 }
