@@ -48,7 +48,7 @@ public class StudentHomeworkServiceImpl implements StudentHomeworkService {
         if (isSubmit) {
             studentHomework.setSubmitTime(LocalDateTime.now());
         }
-        studentHomework.setUpdatedTime(LocalDateTime.now());
+        studentHomework.setSubmitTime(LocalDateTime.now());
 
         StudentHomework existing = studentHomeworkMapper.getByHomeworkAndStudent(
                 studentHomework.getHomeworkId(), studentHomework.getStudentId());

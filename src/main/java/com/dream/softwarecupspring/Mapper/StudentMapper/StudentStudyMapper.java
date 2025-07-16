@@ -43,4 +43,7 @@ public interface StudentStudyMapper {
 
     List<Map<String, Object>> getStudyTimeTrend(@Param("studentId") Long studentId, @Param("days") int days);
 
+    void updateResourceViewCount();
+
+    void updateResourceDownloadCount();
 }

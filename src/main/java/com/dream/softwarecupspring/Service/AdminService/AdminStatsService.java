@@ -16,10 +16,6 @@ public interface AdminStatsService {
 
     Object getUserActivity();
 
-    Object getSystemUsage();
-
-    Object getSystemHealth();
-
     List<Map<String, Object>> getUserActivityTrend(String startDate, String endDate);
 
     List<Map<String, Object>> getRecentActivities();

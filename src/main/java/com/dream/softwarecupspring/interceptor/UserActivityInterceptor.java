@@ -32,14 +32,10 @@ public class UserActivityInterceptor implements HandlerInterceptor {
         LocalDateTime sessionEnd = LocalDateTime.now();
 
         Integer currentId = CurrentHolder.getCurrentId();
-        Long userId = currentId != null ? currentId.longValue() : 0L;  // ✅ 判空处理
+        long userId = currentId != null ? currentId.longValue() : 0L;  // ✅ 判空处理
 
-        String uri = request.getRequestURI();
-        if (uri.contains("/login") || uri.contains("/register")) {
-            return; // 登录/注册不记录活动
-        }
 
-        if (userId != null && userId != 0L) {
+        if (userId != 0L) {
             userActivityTracker.recordSessionEnd(userId, sessionStart, sessionEnd);
         }
     }

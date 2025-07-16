@@ -44,15 +44,6 @@ public class AdminStatsController {
         return Result.success(adminStatsService.getUserActivity());
     }
 
-    @GetMapping("/systemUsage")
-    public Result getSystemUsage() {
-        return Result.success(adminStatsService.getSystemUsage());
-    }
-
-    @GetMapping("/systemHealth")
-    public Result getSystemHealth() {
-        return Result.success(adminStatsService.getSystemHealth());
-    }
 
     @GetMapping("/userActivityTrend")
     public Result getUserActivityTrend(@RequestParam String startDate,

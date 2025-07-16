@@ -130,6 +130,18 @@
             action = #{action}
         WHERE student_id = #{studentId} AND resource_id = #{resourceId}
     </update>
+    <update id="updateResourceViewCount">
+        UPDATE resource
+        SET
+            view_count = view_count + 1
+            WHERE id = #{resourceId}
+    </update>
+    <update id="updateResourceDownloadCount">
+        UPDATE resource
+        SET
+            download_count = download_count + 1
+        WHERE id = #{resourceId}
+    </update>
 
     <select id="getStudentIdsByTeacherId" resultType="java.lang.Integer">
         select student_id from teacher_student where teacher_id = #{teacherId}
@@ -144,7 +156,6 @@
         SELECT
             r.id AS resourceId,
             r.resource_name AS resourceName,
-            ROUND((COALESCE(SUM(ssr.study_duration), 0) / NULLIF(COUNT(DISTINCT ssr.resource_id) * 60, 0)) * 100, 1) AS progress,
             COALESCE(SUM(ssr.study_duration), 0) AS studyDuration,
             MAX(ssr.updated_time) AS lastStudyTime
         FROM student_study_record ssr

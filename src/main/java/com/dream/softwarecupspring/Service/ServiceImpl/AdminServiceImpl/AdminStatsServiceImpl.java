@@ -37,17 +37,6 @@ public class AdminStatsServiceImpl implements AdminStatsService {
     }
 
     @Override
-    public Map<String, Object> getSystemUsage() {
-        return adminStatsMapper.getSystemUsage();
-    }
-
-
-    @Override
-    public Map<String, Object> getSystemHealth() {
-        return adminStatsMapper.getSystemHealth();
-    }
-
-    @Override
     public List<Map<String, Object>> getUserActivityTrend(String startDate, String endDate) {
         return adminStatsMapper.selectActiveUserTrendByDay(startDate, endDate);
     }

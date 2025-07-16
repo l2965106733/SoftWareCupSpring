@@ -18,8 +18,6 @@ public interface AdminStatsMapper {
 
     Map<String, Object> getSystemOverview();
     Map<String, Object> getUserActivity();
-    Map<String, Object> getSystemUsage();
-    Map<String, Object> getSystemHealth();
 
 
     List<Map<String, Object>> selectActiveUserTrendByDay(String startDate, String endDate);

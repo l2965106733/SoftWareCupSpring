@@ -34,7 +34,6 @@ public class TeacherInteractController {
 
     @PostMapping("/aiAnswer")
     public Result generateAIAnswer(@RequestBody TanswerQueryParam param) {
-        System.out.println(1111);
         return Result.success(aiUtils.callAI("generateTeacherAnswer", param, "/ai").getData());
     }
 
