@@ -47,9 +47,8 @@
     <!--  用户活跃度统计  -->
     <select id="getUserActivity" resultType="map">
         SELECT
-                (SELECT COUNT(*) FROM user_activity WHERE login_date = CURDATE()) AS todayActive,
                 (SELECT COUNT(*) FROM users WHERE DATE(create_time) = CURDATE()) AS todayNewUsers,
-                (SELECT COALESCE(AVG(session_duration), 0) FROM user_activity WHERE login_date = CURDATE()) AS avgSessionTime,
+#                 (SELECT COALESCE(AVG(session_duration), 0) FROM user_activity WHERE login_date = CURDATE()) AS avgSessionTime,
                 (SELECT COUNT(*) FROM user_activity WHERE login_date = CURDATE()) AS totalLogins,
                 (SELECT COUNT(DISTINCT user_id) FROM user_activity WHERE login_date = CURDATE()) AS uniqueLogins
     </select>
@@ -133,5 +132,37 @@
         ORDER BY createTime DESC
         LIMIT 20
     </select>
+
+    <select id="getKnowledgeDistribution" resultType="java.util.Map">
+        SELECT
+            CASE
+                WHEN sa.score / q.score >= 0.9 THEN '优秀'
+                WHEN sa.score / q.score >= 0.6 THEN '良好'
+                WHEN sa.score / q.score >= 0.6 THEN '一般'
+                ELSE '较差'
+                END AS label,
+            COUNT(*) AS count
+        FROM student_answers sa
+                 JOIN questions q ON sa.question_id = q.id
+        WHERE q.knowledge = #{knowledge}
+        GROUP BY label
+    </select>
+
+    <select id="getTopKnowledgeScore" resultType="java.util.Map">
+        SELECT
+            q.knowledge,
+            ROUND(SUM(sa.score) * 100.0 / SUM(q.score), 2) AS scoreRate
+        FROM
+            student_answers sa
+                JOIN questions q ON sa.question_id = q.id
+        GROUP BY
+            q.knowledge
+        ORDER BY
+            scoreRate DESC
+        LIMIT 5
+    </select>
+
+
+
 
 </mapper>

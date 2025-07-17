@@ -57,4 +57,17 @@ public class AdminStatsController {
         List<Map<String, Object>> activities = adminStatsService.getRecentActivities();
         return Result.success(activities);
     }
+
+    @GetMapping("/topKnowledgeScore")
+    public Result getTopKnowledgeScore() {
+        List<Map<String, Object>> activities = adminStatsService.getTopKnowledgeScore();
+        return Result.success(activities);
+    }
+
+    @GetMapping("/knowledgeDistribution")
+    public Result getKnowledgeDistribution(@RequestParam String knowledgeName) {
+        List<Map<String, Object>> activities = adminStatsService.getKnowledgeDistribution(knowledgeName);
+        return Result.success(activities);
+    }
+
 }

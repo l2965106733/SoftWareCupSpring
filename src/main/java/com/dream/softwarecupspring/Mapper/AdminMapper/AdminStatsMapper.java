@@ -23,4 +23,8 @@ public interface AdminStatsMapper {
     List<Map<String, Object>> selectActiveUserTrendByDay(String startDate, String endDate);
 
     List<Map<String, Object>> getRecentActivities();
+
+    List<Map<String, Object>> getKnowledgeDistribution(String knowledgeName);
+
+    List<Map<String, Object>> getTopKnowledgeScore();
 }

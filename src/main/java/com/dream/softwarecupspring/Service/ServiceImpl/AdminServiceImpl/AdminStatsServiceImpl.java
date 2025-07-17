@@ -45,4 +45,14 @@ public class AdminStatsServiceImpl implements AdminStatsService {
     public List<Map<String, Object>> getRecentActivities() {
         return adminStatsMapper.getRecentActivities();
     }
+
+    @Override
+    public List<Map<String, Object>> getKnowledgeDistribution(String knowledgeName) {
+        return adminStatsMapper.getKnowledgeDistribution(knowledgeName);
+    }
+
+    @Override
+    public List<Map<String, Object>> getTopKnowledgeScore() {
+        return adminStatsMapper.getTopKnowledgeScore();
+    }
 }

@@ -19,4 +19,8 @@ public interface AdminStatsService {
     List<Map<String, Object>> getUserActivityTrend(String startDate, String endDate);
 
     List<Map<String, Object>> getRecentActivities();
+
+    List<Map<String, Object>> getTopKnowledgeScore();
+
+    List<Map<String, Object>> getKnowledgeDistribution(String knowledgeName);
 }

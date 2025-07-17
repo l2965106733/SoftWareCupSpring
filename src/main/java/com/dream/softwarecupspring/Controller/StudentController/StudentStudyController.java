@@ -5,13 +5,18 @@ import com.dream.softwarecupspring.pojo.AI.AiQuestion;
 import com.dream.softwarecupspring.pojo.AI.AiResponse;
 import com.dream.softwarecupspring.pojo.AI.ChatQueryParam;
 import com.dream.softwarecupspring.pojo.Common.Result;
+import com.dream.softwarecupspring.pojo.Homework.Question;
+import com.dream.softwarecupspring.pojo.Homework.TquestionQueryParam;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecordDTO;
 import com.dream.softwarecupspring.utils.AIUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/student/study")
@@ -74,5 +79,34 @@ public class StudentStudyController {
     public Result getStudyStats(@PathVariable Integer studentId) {
         Map<String, Object> stats = studentStudyService.getStudyStats(studentId);
         return Result.success(stats);
+    }
+
+    @PostMapping("/generateAIQuestion")
+    public Result generateAIQuestion(@RequestBody TquestionQueryParam tquestionQueryParam) {
+        AiResponse response = aiUtils.callAI("generateQuestion", tquestionQueryParam, "/ai");
+        String rawText = response.getData();
+        List<Question> questions = parseQuestions(rawText, tquestionQueryParam.getType());
+        for (Question question : questions) {
+            question.setKnowledge(response.getKnowledge());
+        }
+        return Result.success(questions);
+    }
+
+    private List<Question> parseQuestions(String rawText, String type) {
+        List<Question> list = new ArrayList<>();
+        Pattern pattern = Pattern.compile(
+                "【\\d+】([\\s\\S]*?)【正确答案】([\\s\\S]*?)【解析】([\\s\\S]*?)(?=【\\d+】|$)"
+        );
+        Matcher matcher = pattern.matcher(rawText);
+        while (matcher.find()) {
+            Question q = new Question();
+            q.setContent(matcher.group(1).trim());
+            q.setAnswer(matcher.group(2).trim());
+            q.setExplain(matcher.group(3).trim());
+            q.setType(type);
+            q.setScore(null);
+            list.add(q);
+        }
+        return list;
     }
 }

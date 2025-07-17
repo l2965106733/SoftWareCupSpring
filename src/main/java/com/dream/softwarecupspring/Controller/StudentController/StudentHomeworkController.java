@@ -1,8 +1,12 @@
 package com.dream.softwarecupspring.Controller.StudentController;
 
 import com.dream.softwarecupspring.Service.StudentService.StudentHomeworkService;
+import com.dream.softwarecupspring.pojo.AI.AiResponse;
+import com.dream.softwarecupspring.pojo.AI.QuestionAnalysisQueryParam;
 import com.dream.softwarecupspring.pojo.Common.Result;
 import com.dream.softwarecupspring.pojo.Homework.StudentHomework;
+import com.dream.softwarecupspring.pojo.Homework.TquestionQueryParam;
+import com.dream.softwarecupspring.utils.AIUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +16,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/student/homework")
 public class StudentHomeworkController {
+    @Autowired
+    private AIUtils aiUtils;
 
     @Autowired
     private StudentHomeworkService studentHomeworkService;
@@ -40,9 +46,17 @@ public class StudentHomeworkController {
         return Result.success("作业提交成功");
     }
 
+    @PostMapping("/analysis")
+    public Result getAnalysis(@RequestBody QuestionAnalysisQueryParam questionAnalysisQueryParam) {
+        AiResponse response = aiUtils.callAI("generateQuestionAnalysis", questionAnalysisQueryParam, "/ai");
+        return Result.success(response.getData());
+    }
+
     @GetMapping("/stats/{studentId}")
     public Result getHomeworkStats(@PathVariable Integer studentId) {
         Map<String, Object> stats = studentHomeworkService.getHomeworkStats(studentId);
         return Result.success(stats);
     }
+
+
 }
