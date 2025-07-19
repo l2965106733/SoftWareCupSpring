@@ -69,25 +69,56 @@ public class TeacherHomeworkController {
     @PostMapping("/aiQuestion")
     public Result generateAIQuestion(@RequestBody TquestionQueryParam tquestionQueryParam) {
         AiResponse response = aiUtils.callAI("generateQuestion", tquestionQueryParam, "/ai");
+
         String rawText = response.getData();
+        System.out.println(rawText);
         List<Question> questions = parseQuestions(rawText, tquestionQueryParam.getType());
         for (Question question : questions) {
             question.setKnowledge(response.getKnowledge());
         }
+        System.out.println(questions);
         return Result.success(questions);
     }
 
+    private static final Pattern QUESTION_BLOCK = Pattern.compile(
+            "【题号(?:\\d*)】\\s*(\\d*)\\s*" +                           // group(1): 题号
+                    "【题干】([\\s\\S]*?)(?=\\s+(?:java|c|cpp|python|sql)\\b|【正确答案】|【解析】|【题号(?:\\d*)】|\\z)" + // group(2): 题干，止于 java 或结构标记
+                    "(?:【正确答案】([\\s\\S]*?))?" +                            // group(3): 正确答案
+                    "【解析】([\\s\\S]*?)(?=【题号(?:\\d*)】|\\z)"               // group(4): 解析
+    );
+
+    private static final Pattern CODE_BLOCK = Pattern.compile(
+            "(?:```[^\\n]*\\R([\\s\\S]*?)```)" +
+                    "|(?:\\b(java|c|cpp|python|sql)\\b\\s*\\R([\\s\\S]*?))(?=\\R\\s*【|\\z)",
+            Pattern.CASE_INSENSITIVE);
+
     private List<Question> parseQuestions(String rawText, String type) {
         List<Question> list = new ArrayList<>();
-        Pattern pattern = Pattern.compile(
-                "【\\d+】([\\s\\S]*?)【正确答案】([\\s\\S]*?)【解析】([\\s\\S]*?)(?=【\\d+】|$)"
-        );
-        Matcher matcher = pattern.matcher(rawText);
-        while (matcher.find()) {
+        if (rawText == null || rawText.isBlank()) return list;
+
+        Matcher m = QUESTION_BLOCK.matcher(rawText);
+        while (m.find()) {
+            String qNum    = m.group(1) != null ? m.group(1).trim() : "";
+            String stem    = m.group(2) != null ? m.group(2).trim() : "";
+            String answer  = m.group(3) != null ? m.group(3).trim() : null;
+            String explain = m.group(4) != null ? m.group(4).trim() : "";
+            if (answer == null || answer.trim().isEmpty()) {     // 自动抓代码
+                Matcher code = CODE_BLOCK.matcher(stem);
+                if (code.find()) {
+                    String codeBlock = code.group(1) != null ? code.group(1) : code.group(3);
+                    answer = codeBlock != null ? codeBlock.trim()
+                            : "【未检测到代码块，无法自动提取正确答案】";
+                } else {
+                    answer = "【未检测到代码块，无法自动提取正确答案】";
+                }
+            } else {
+                answer = answer.trim();
+            }
+
             Question q = new Question();
-            q.setContent(matcher.group(1).trim());
-            q.setAnswer(matcher.group(2).trim());
-            q.setExplain(matcher.group(3).trim());
+            q.setContent(stem);
+            q.setAnswer(answer);
+            q.setExplain(explain);
             q.setType(type);
             q.setScore(null);
             list.add(q);
