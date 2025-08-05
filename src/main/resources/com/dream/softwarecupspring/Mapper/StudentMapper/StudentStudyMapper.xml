@@ -86,10 +86,18 @@
     </select>
 
     <select id="getTotalCoursewareCount" resultType="int">
-        SELECT COUNT(DISTINCT resource_id)
-        FROM student_study_record
-        WHERE student_id = #{studentId}
+        SELECT COUNT(*)
+        FROM resource
+        WHERE teacher_id IN (
+            SELECT teacher_id
+            FROM teacher_student
+            WHERE student_id = #{studentId}
+        )
     </select>
+
+
+
+
 
     <select id="getAverageProgress" resultType="double">
         SELECT IFNULL(AVG(study_status), 0)

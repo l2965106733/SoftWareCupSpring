@@ -20,12 +20,16 @@ public class PublicController {
     public Result login(@RequestBody User user) {
         LoginInfo info = publicService.login(user);
         if (info != null) {
+            // 进行角色校验
+            if (!info.getRole().equals(user.getRole())) {
+                return Result.error("角色不匹配，请选择正确的登录身份");
+            }
             return Result.success(info);
-        }
-        else {
+        } else {
             return Result.error("用户名或密码错误");
         }
     }
+
 
 
     @PutMapping("/reset")

@@ -5,7 +5,7 @@ spring:
   url: jdbc:mysql://localhost:3306/software
   driver-class-name: com.mysql.cj.jdbc.Driver
   username: root
-  password: '0515'
+  password: '1234'
 mybatis:
  configuration:
   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -15,8 +15,11 @@ mybatis:
 aliyun:
  oss:
   endpoint: https://oss-cn-beijing.aliyuncs.com
-  bucketName: softwarecup2025
+  bucketName: softwarecupp
   region: cn-beijing
+  accessKeyId: LTAI5tEzekfqvHsyM2XMt45R
+  accessKeySecret: rDW2uJ8Wi7O71xHHNcrHX6K1LR5UZt
+
 
 ai:
- flaskUrl: https://hz-t3.matpool.com:29691
+ flaskUrl: https://hz-4.matpool.com:28039
