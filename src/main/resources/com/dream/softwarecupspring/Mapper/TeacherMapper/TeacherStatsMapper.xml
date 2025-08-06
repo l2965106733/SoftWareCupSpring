@@ -126,7 +126,7 @@
         SELECT COUNT(DISTINCT sh.homework_id)
         FROM student_homework sh
                  JOIN homework h ON sh.homework_id = h.id
-        WHERE h.teacher_id = #{teacherId} AND sh.total_score IS NULL
+        WHERE h.teacher_id = #{teacherId} and sh.status = 1 AND sh.total_score IS NULL
     </select>
 
     <select id="getSubmitRate" resultType="double">
@@ -134,10 +134,12 @@
         FROM (
                  SELECT COUNT(*) AS count FROM student_homework sh
                                                    JOIN homework h ON sh.homework_id = h.id
-                 WHERE h.teacher_id = #{teacherId}
+                 WHERE h.teacher_id = #{teacherId} and (sh.status = 1 or sh.status = 2)
              ) submitted,
              (
-                 SELECT COUNT(*) AS count FROM homework WHERE teacher_id = #{teacherId}
+                 SELECT COUNT(*) AS count FROM student_homework sh
+                                                   JOIN homework h ON sh.homework_id = h.id
+                 WHERE h.teacher_id = #{teacherId}
              ) total
     </select>
 
@@ -151,7 +153,7 @@
 
     <select id="getRecentHomework" resultType="com.dream.softwarecupspring.pojo.Homework.RecentHomework">
         SELECT h.id, h.title,
-               COUNT(DISTINCT sh.student_id) AS submittedCount,
+               (select count(*) from student_homework join software.homework h2 on h2.id = student_homework.homework_id  where student_homework.status = 1 or student_homework.status = 2) AS submittedCount,
                (SELECT COUNT(*) FROM teacher_student WHERE teacher_id = #{teacherId}) AS totalStudents,
                SUM(CASE WHEN sh.total_score IS NOT NULL THEN 1 ELSE 0 END) AS gradedCount
         FROM homework h

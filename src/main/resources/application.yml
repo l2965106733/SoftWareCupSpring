@@ -2,10 +2,15 @@ spring:
  application:
   name: SoftWareCupSpring
  datasource:
-  url: jdbc:mysql://localhost:3306/software
+  url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:software}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   driver-class-name: com.mysql.cj.jdbc.Driver
-  username: root
-  password: '0515'
+  username: ${DB_USER:root}
+  password: ${DB_PASS:0515}
+ servlet:
+  multipart:
+   max-file-size: 100MB
+   max-request-size: 100MB
+
 mybatis:
  configuration:
   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -19,4 +24,4 @@ aliyun:
   region: cn-beijing
 
 ai:
- flaskUrl: https://hz-t3.matpool.com:29691
+ flaskUrl: https://hz-t3.matpool.com:29367

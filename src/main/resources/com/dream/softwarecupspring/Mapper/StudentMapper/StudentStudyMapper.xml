@@ -86,9 +86,10 @@
     </select>
 
     <select id="getTotalCoursewareCount" resultType="int">
-        SELECT COUNT(DISTINCT resource_id)
-        FROM student_study_record
-        WHERE student_id = #{studentId}
+        SELECT COUNT(DISTINCT id)
+        FROM resource
+        where teacher_id in
+              (select teacher_id from teacher_student where student_id = #{studentId})
     </select>
 
     <select id="getAverageProgress" resultType="double">
@@ -182,6 +183,9 @@
         WHERE student_id = #{studentId}
         ORDER BY created_time DESC
         LIMIT #{limit}
+    </select>
+    <select id="getAiQuestionsCount" resultType="java.lang.Object">
+        select count(*) from student_ai_questions WHERE student_id = #{studentId}
     </select>
 </mapper>
 

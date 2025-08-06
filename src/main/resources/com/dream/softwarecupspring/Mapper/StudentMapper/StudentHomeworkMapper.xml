@@ -59,7 +59,12 @@
 
     <update id="updateHomeworkById" parameterType="com.dream.softwarecupspring.pojo.Homework.StudentHomework">
         UPDATE student_homework
-        SET status = #{status}, total_score = #{totalScore}, submit_time = #{submitTime}, feedback = #{feedback}
+        <set>
+            status = #{status},
+            total_score = #{totalScore},
+            <if test="submitTime != null ">submit_time = #{submitTime},</if>
+            feedback = #{feedback}
+        </set>
         WHERE homework_id = #{homeworkId} and student_id = #{studentId}
     </update>
 
