@@ -47,5 +47,5 @@ public interface StudentStudyMapper {
 
     void updateResourceDownloadCount(Long resourceId);
 
-    Object getAiQuestionsCount(Integer studentId);
+//    Object getAiQuestionsCount(Integer studentId);
 }

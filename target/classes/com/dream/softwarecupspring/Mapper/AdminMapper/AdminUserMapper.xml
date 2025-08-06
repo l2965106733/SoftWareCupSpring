@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dream.softwarecupspring.Mapper.AdminMapper.AdminUserMapper">
+    <insert id="insert">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            username,
+            name,
+            gender,
+            role,
+            identifier,
+
+            create_time,
+            update_time
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{username},
+            #{name},
+            #{gender},
+            #{role},
+            #{identifier},
+
+            #{createTime},
+            #{updateTime}
+        </trim>
+    </insert>
+
+    <update id="updateById">
+        update users
+        <set>
+            <if test="username != null and username !=''">username = #{username},</if>
+            <if test="name != null and name !=''">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="identifier != null and identifier !=''">identifier = #{identifier},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByIds">
+        delete from users where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="pageSelect" resultType="com.dream.softwarecupspring.pojo.User.User">
+        select id, username, password, name, gender, role, identifier, create_time, update_time from users
+        <where>
+            role != 3
+            <if test="name != null and name != ''">
+                AND name like concat('%',#{name},'%')
+            </if>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
+            <if test="role != null">
+                AND role = #{role}
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.dream.softwarecupspring.pojo.User.User">
+        select users.* from users where id = #{id}
+    </select>
+
+
+</mapper>

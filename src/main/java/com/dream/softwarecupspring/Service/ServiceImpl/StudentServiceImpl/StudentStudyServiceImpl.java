@@ -152,7 +152,7 @@ public class StudentStudyServiceImpl implements StudentStudyService {
         stats.put("totalCourseware", studentStudyMapper.getTotalCoursewareCount(studentId));
         stats.put("avgProgress", studentStudyMapper.getAverageProgress(studentId));
         stats.put("studyDays", studentStudyMapper.getStudyDaysCount(studentId));
-        stats.put("aiQuestions", studentStudyMapper.getAiQuestionsCount(studentId));
+//        stats.put("aiQuestions", studentStudyMapper.getAiQuestionsCount(studentId));
         stats.put("recentStudyRecords", studentStudyMapper.getRecentStudyRecords(studentId));
         return stats;
     }

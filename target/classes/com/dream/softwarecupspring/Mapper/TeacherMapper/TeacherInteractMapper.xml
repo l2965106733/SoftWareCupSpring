@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dream.softwarecupspring.Mapper.TeacherMapper.TeacherInteractMapper">
+
+    <insert id="addTeacherAnswer">
+        UPDATE student_questions
+        SET teacher_id = #{teacherId},
+            answer = #{answer},
+            status = 1,
+            answer_time = #{answerTime}
+        WHERE id = #{questionId}
+    </insert>
+
+    <select id="getStudentQuestions" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        SELECT
+            sq.id,
+            sq.student_id,
+            sq.teacher_id,
+            sq.title,
+            sq.content,
+            sq.type,
+            sq.status,
+            sq.answer,
+            sq.created_time,
+            sq.updated_time,
+            u.name as student_name,
+            (select u.name from users u where u.id = sq.teacher_id) as teacher_name
+        FROM student_questions sq
+                 LEFT JOIN users u ON sq.student_id = u.id
+        WHERE sq.teacher_id = #{teacherId}
+        ORDER BY sq.created_time DESC
+    </select>
+
+    <select id="getTeacherRatings" resultType="map">
+        SELECT
+            sq.id AS id,
+            sq.student_id AS studentId,
+            u.name AS studentName,
+            sq.title AS title,
+            sq.rating AS rating,
+            sq.created_time AS createdTime
+        FROM student_questions sq
+                 JOIN users u ON sq.student_id = u.id
+        WHERE sq.teacher_id = #{teacherId}
+          AND sq.rating IS NOT NULL
+        ORDER BY sq.created_time DESC
+    </select>
+
+</mapper>

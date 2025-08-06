@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dream.softwarecupspring.Mapper.StudentMapper.StudentInteractMapper">
+
+
+    <insert id="insertQuestion" parameterType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_questions (student_id, teacher_id, title,type, content, status, answer, answer_time, rating, created_time, updated_time)
+        VALUES (#{studentId}, #{teacherId}, #{title}, #{type},#{content}, #{status}, #{answer}, #{answerTime}, #{rating}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <select id="getQuestionsByStudentId" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        SELECT
+            sq.*,
+            u.name AS studentName,
+            (SELECT name FROM users WHERE id = sq.teacher_id) AS teacherName
+        FROM
+            student_questions sq
+                JOIN
+            users u ON u.id = sq.student_id
+        WHERE
+            sq.student_id = #{studentId}
+        ORDER BY
+            created_time DESC
+    </select>
+
+    <select id="selectQuestionById" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        SELECT * FROM student_questions WHERE id = #{questionId}
+    </select>
+
+    <update id="updateQuestionById" parameterType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        UPDATE student_questions
+        SET rating = #{rating}, updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getTotalQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId}
+    </select>
+
+    <select id="getAnsweredQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId} AND status = 1
+    </select>
+
+    <select id="getPendingQuestionsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId} AND status = 0
+    </select>
+
+    <select id="getAverageRating" resultType="double">
+        SELECT IFNULL(AVG(rating), 0) FROM student_questions WHERE student_id = #{studentId} AND rating IS NOT NULL
+    </select>
+
+    <select id="getQuestionsByType" resultType="map">
+        SELECT title AS type, COUNT(*) AS count
+        FROM student_questions
+        WHERE student_id = #{studentId}
+        GROUP BY title
+    </select>
+
+    <select id="getRecentQuestions" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        SELECT
+            sq.*,
+            u.name AS studentName,
+            (SELECT name FROM users WHERE id = sq.teacher_id) AS teacherName
+        FROM
+            student_questions sq
+                JOIN
+            users u ON u.id = sq.student_id
+        WHERE
+            sq.student_id = #{studentId}
+        ORDER BY
+            created_time DESC
+        limit 5
+    </select>
+
+    <select id="getRatedQuestionsByStudentId" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        select * from student_questions
+    </select>
+
+    <select id="getTotalRatingsCount" resultType="int">
+        SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId} AND rating IS NOT NULL
+    </select>
+    <select id="getAverageRatingByStudent" resultType="double">
+        SELECT IFNULL(AVG(rating), 0) FROM student_questions WHERE student_id = #{studentId} AND rating IS NOT NULL
+    </select>
+    <select id="getRatingDistribution" resultType="com.dream.softwarecupspring.pojo.Homework.RatingCount">
+        SELECT rating, COUNT(*) AS count FROM student_questions WHERE student_id = #{studentId} AND rating IS NOT NULL GROUP BY rating ORDER BY rating DESC
+    </select>
+    <select id="getRecentRatedQuestions" resultType="com.dream.softwarecupspring.pojo.Interact.StudentQuestion">
+        SELECT
+            sq.*,
+            u.name AS studentName,
+            (SELECT name FROM users WHERE id = sq.teacher_id) AS teacherName
+        FROM
+            student_questions sq
+                JOIN
+            users u ON u.id = sq.student_id
+        WHERE
+            sq.student_id = #{studentId} and rating is not null
+        ORDER BY
+            updated_time DESC
+        limit 5
+    </select>
+
+    <select id="getHomeStats" resultType="map">
+        SELECT
+            ROUND(SUM(CASE WHEN DATE(ssr.first_view_time) = CURDATE() THEN ssr.study_duration ELSE 0 END) / 60, 1) AS todayStudyTime,
+            (SELECT COUNT(*) FROM student_homework WHERE student_id = #{studentId} AND status IN (1, 2)) AS completedHomework,
+            (SELECT COUNT(*) FROM student_questions WHERE student_id = #{studentId}) AS interactionCount,
+            ROUND(
+                    COALESCE(SUM(ssr.study_duration) / NULLIF(COUNT(DISTINCT ssr.resource_id) * 60, 0), 0) * 100
+            ) AS studyProgress
+        FROM student_study_record ssr
+        WHERE ssr.student_id = #{studentId}
+    </select>
+
+    <select id="getRecentActivities" resultType="map">
+        SELECT id, 'study' AS type, CONCAT('学习了资源ID ', resource_id) AS title, updated_time AS createdTime
+        FROM student_study_record
+        WHERE student_id = #{studentId}
+        UNION ALL
+        SELECT id, 'homework' AS type, CONCAT('提交了作业ID ', homework_id) AS title, submit_time AS createdTime
+        FROM student_homework
+        WHERE student_id = #{studentId} AND status IN (1, 2)
+        UNION ALL
+        SELECT id, 'discussion' AS type, title, created_time AS createdTime
+        FROM student_questions
+        WHERE student_id = #{studentId}
+        ORDER BY createdTime DESC
+        LIMIT 20
+    </select>
+
+    <select id="getTeacherIdByStudentId" resultType="java.lang.Object">
+        select teacher_id from teacher_student where student_id = #{studentId}
+    </select>
+
+
+</mapper>
+

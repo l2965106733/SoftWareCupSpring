@@ -18,6 +18,18 @@ public interface TeacherStatsMapper {
     Integer getNewStudentsThisWeek(Integer teacherId);
 
     Double getHomeworkRate(Integer teacherId);
+//    SELECT IFNULL(ROUND(100.0 * completed.count / total.count, 2), 0)
+//    FROM (
+//            SELECT COUNT(*) AS count
+//    FROM homework
+//    WHERE teacher_id = #{teacherId}
+//             ) total,
+//            (
+//    SELECT COUNT(DISTINCT sh.student_id) AS count
+//    FROM homework h
+//    JOIN student_homework sh ON h.id = sh.homework_id
+//    WHERE h.teacher_id = #{teacherId} AND (sh.status = 1 or sh.status = 2)
+//             ) completed
 
     Double getHomeworkTrend(Integer teacherId);
 
