@@ -82,8 +82,14 @@
     <select id="getCompletedCoursewareCount" resultType="int">
         SELECT COUNT(DISTINCT resource_id)
         FROM student_study_record
-        WHERE student_id = #{studentId} AND study_status = 1
+        WHERE student_id = #{studentId} AND study_status = 2
     </select>
+<!--    <select id="getCompletedCoursewareCount" resultType="int">-->
+<!--        SELECT COUNT(DISTINCT resource_id)-->
+<!--        FROM student_study_record-->
+<!--        WHERE student_id = #{studentId}-->
+<!--          AND study_duration > 0-->
+<!--    </select>-->
 
     <select id="getTotalCoursewareCount" resultType="int">
         SELECT COUNT(*)
@@ -100,10 +106,18 @@
 
 
     <select id="getAverageProgress" resultType="double">
-        SELECT IFNULL(AVG(study_status), 0)
-        FROM student_study_record
-        WHERE student_id = #{studentId}
+        SELECT
+            IFNULL(COUNT(DISTINCT ssr.resource_id) / NULLIF(COUNT(DISTINCT r.id), 0), 0)
+        FROM teacher_student ts
+                 JOIN resource r ON ts.teacher_id = r.teacher_id
+                 LEFT JOIN student_study_record ssr
+                           ON ssr.student_id = ts.student_id
+                               AND ssr.resource_id = r.id
+                               AND ssr.study_status = 2
+        WHERE ts.student_id = #{studentId}
     </select>
+
+
 
     <select id="getStudyDaysCount" resultType="int">
         SELECT COUNT(DISTINCT DATE(first_view_time))

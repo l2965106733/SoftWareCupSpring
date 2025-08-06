@@ -1,5 +1,6 @@
 package com.dream.softwarecupspring.Service.ServiceImpl.StudentServiceImpl;
 
+import ch.qos.logback.classic.Logger;
 import com.dream.softwarecupspring.Mapper.StudentMapper.StudentInteractMapper;
 import com.dream.softwarecupspring.Service.StudentService.StudentInteractService;
 import com.dream.softwarecupspring.pojo.AI.AiQuestion;
