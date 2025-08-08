@@ -5,14 +5,19 @@ import com.dream.softwarecupspring.Service.AdminService.AdminUserService;
 import com.dream.softwarecupspring.pojo.Common.PageResult;
 import com.dream.softwarecupspring.pojo.User.User;
 import com.dream.softwarecupspring.pojo.User.UserQueryParam;
+import com.dream.softwarecupspring.utils.CurrentHolder;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
@@ -47,5 +52,22 @@ public class AdminUserServiceImpl implements AdminUserService {
     public void update(User user) {
         user.setUpdateTime(LocalDateTime.now());
         adminUserMapper.updateById(user);
+    }
+
+    @Override
+    public Map<String, List<User>> getStudentsByTeacherId(Integer teacherId) {
+        List<User> allStudents = adminUserMapper.getAllStudents();
+        List<User> relatedStudents = adminUserMapper.getRelatedStudents(teacherId);
+        Map<String, List<User>> result = new HashMap<>();
+        result.put("all", allStudents);
+        result.put("related", relatedStudents);
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public void submitSelectedStudents(List<Integer> selectedStudentIds,Integer teacherId) {
+        adminUserMapper.deleteStudentdsByTeacherId(teacherId);
+        adminUserMapper.submitSelectedStudents(selectedStudentIds,teacherId);
     }
 }

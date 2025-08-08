@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 管理员端 - 用户管理控制器
@@ -30,6 +31,12 @@ public class AdminUserController {
         return Result.success();
     }
 
+    @GetMapping("/getAllStudents/{teacherId}")
+    public Result getAllStudentsByTeacherId(@PathVariable Integer teacherId) {
+        Map<String, List<User>> students = adminUserService.getStudentsByTeacherId(teacherId);
+        return Result.success(students);
+    }
+
     @PostMapping
     public Result add(@RequestBody User user) {
         adminUserService.add(user);
@@ -44,6 +51,12 @@ public class AdminUserController {
     @PutMapping
     public Result update(@RequestBody User user) {
         adminUserService.update(user);
+        return Result.success();
+    }
+
+    @PutMapping("/submitSelectedStudents/{teacherId}")
+    public Result submitSelectedStudents(@PathVariable Integer teacherId,@RequestBody List<Integer> selectedStudentIds) {
+        adminUserService.submitSelectedStudents(selectedStudentIds,teacherId);
         return Result.success();
     }
 }

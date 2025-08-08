@@ -60,7 +60,8 @@ public class StudentStudyServiceImpl implements StudentStudyService {
             }
             return true;
 
-        } else if ("start_study".equals(dto.getAction())) {
+        }
+        else if ("start_study".equals(dto.getAction())) {
             // 开始学习：更新或插入为学习中状态 1
             if (record == null) {
                 StudyRecord newRecord = new StudyRecord();
@@ -86,10 +87,11 @@ public class StudentStudyServiceImpl implements StudentStudyService {
                 );
             }
 
-            studentStudyMapper.updateResourceViewCount(dto.getResourceId());
+//            studentStudyMapper.updateResourceViewCount(dto.getResourceId());
             return true;
 
-        } else if ("end_study".equals(dto.getAction())) {
+        }
+        else if ("end_study".equals(dto.getAction())) {
             // 结束学习：更新或插入为已完成状态 2
             if (record == null) {
                 // 首次结束学习也要插入记录

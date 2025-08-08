@@ -28,6 +28,15 @@
         </trim>
     </insert>
 
+    <insert id="submitSelectedStudents">
+        <if test="selectedStudentIds != null and selectedStudentIds.size() > 0">
+            insert into teacher_student(student_id, teacher_id) values
+            <foreach collection="selectedStudentIds" item="studentId" separator=",">
+                (#{studentId}, #{teacherId})
+            </foreach>
+        </if>
+    </insert>
+
     <update id="updateById">
         update users
         <set>
@@ -67,6 +76,18 @@
 
     <select id="getById" resultType="com.dream.softwarecupspring.pojo.User.User">
         select users.* from users where id = #{id}
+    </select>
+
+    <select id="getAllStudents" resultType="com.dream.softwarecupspring.pojo.User.User">
+        select * from users where role = 1
+    </select>
+
+    <!-- 当前教师已关联的学生 -->
+    <select id="getRelatedStudents" resultType="com.dream.softwarecupspring.pojo.User.User">
+        select * from users
+        where id in (
+            select student_id from teacher_student where teacher_id = #{teacherId}
+        )
     </select>
 
 
