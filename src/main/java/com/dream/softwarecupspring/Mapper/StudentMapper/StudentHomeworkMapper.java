@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface StudentHomeworkMapper {
     List<Map<String, Object>> getHomeworkListByStudentId(Integer studentId);
-    List<Map<String, Object>> getHomeworkDetailById(Integer homeworkId);
+    List<Map<String, Object>> getHomeworkDetailById(Integer homeworkId,Integer studentId);
 
     StudentHomework getByHomeworkAndStudent(@Param("homeworkId") Integer homeworkId,
                                             @Param("studentId") Integer studentId);

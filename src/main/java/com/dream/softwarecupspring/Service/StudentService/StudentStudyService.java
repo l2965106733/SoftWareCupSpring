@@ -1,6 +1,7 @@
 package com.dream.softwarecupspring.Service.StudentService;
 
 import com.dream.softwarecupspring.pojo.AI.AiQuestion;
+import com.dream.softwarecupspring.pojo.Homework.Question;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecordDTO;
 
 import java.util.List;
@@ -22,4 +23,17 @@ public interface StudentStudyService {
     Object getAiQuestions(Long studentId, int limit);
 
     void recordAiQuestion(AiQuestion aiQuestion);
+
+    List<AiQuestion> getChatList(Long userId);
+
+    List<AiQuestion> getChatDetailById(Long id);
+
+    List<Question> getMistakes(Long studentId);
+
+    String getChatName(Integer chatId);
+
+    void setChatName(Integer chatId, String name);
+
+    void deleteChat(Integer chatId);
+
 }

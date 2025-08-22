@@ -170,8 +170,8 @@
     </select>
 
     <insert id="insertAiQuestion" parameterType="com.dream.softwarecupspring.pojo.AI.AiQuestion">
-        INSERT INTO student_ai_questions (student_id, question_content,answer, created_time)
-        VALUES (#{studentId}, #{questionContent},#{answer}, #{createdTime})
+        INSERT INTO student_ai_questions (student_id, question_content,answer, created_time,chatId,chatName)
+        VALUES (#{studentId}, #{questionContent},#{answer}, #{createdTime},#{chatId},#{chatName})
     </insert>
 
     <select id="getStudyRecords" resultType="map">
@@ -199,11 +199,28 @@
     </select>
 
     <select id="getAiQuestions" resultType="map">
-        SELECT id, question_content AS questionContent, answer AS aiResponse, created_time AS createdTime
-        FROM student_ai_questions
-        WHERE student_id = #{studentId}
-        ORDER BY created_time DESC
+        SELECT
+            s.id,
+            s.question_content AS questionContent,
+            s.answer           AS aiResponse,
+            s.created_time     AS createdTime
+        FROM student_ai_questions s
+                 JOIN (
+            SELECT chatId
+            FROM student_ai_questions
+            WHERE student_id = #{studentId}
+            GROUP BY chatId
+            ORDER BY MAX(created_time) DESC
+            LIMIT 1
+        ) t ON t.chatId = s.chatId
+        WHERE s.student_id = #{studentId}
+        ORDER BY s.created_time
         LIMIT #{limit}
+    </select>
+
+    <select id="getMistakes" resultType="com.dream.softwarecupspring.pojo.Homework.Question">
+        select q.id,q.content, q.answer standardAnswer, q.explain, q.type, q.score, q.knowledge,sa.answer studentAnswer,sa.score studentScore  from questions q
+        join student_answers sa on sa.question_id = q.id where sa.score &lt; q.score and sa.student_id = #{studentId}
     </select>
 </mapper>
 

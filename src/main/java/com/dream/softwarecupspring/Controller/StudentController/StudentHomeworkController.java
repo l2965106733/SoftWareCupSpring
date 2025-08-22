@@ -57,6 +57,4 @@ public class StudentHomeworkController {
         Map<String, Object> stats = studentHomeworkService.getHomeworkStats(studentId);
         return Result.success(stats);
     }
-
-
 }

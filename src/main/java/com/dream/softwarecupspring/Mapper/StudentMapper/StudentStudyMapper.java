@@ -1,10 +1,9 @@
 package com.dream.softwarecupspring.Mapper.StudentMapper;
 
 import com.dream.softwarecupspring.pojo.AI.AiQuestion;
+import com.dream.softwarecupspring.pojo.Homework.Question;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecord;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +45,25 @@ public interface StudentStudyMapper {
     void updateResourceViewCount(Long resourceId);
 
     void updateResourceDownloadCount(Long resourceId);
+
+    @Select("select chatId,chatName from student_ai_questions where student_id = #{userId} group by chatId,chatName")
+    List<AiQuestion> getChatList(Long userId);
+
+    @Select("select * from student_ai_questions where chatId = #{id}")
+    List<AiQuestion> getChatDetailById(Long id);
+
+    List<Question> getMistakes(Long studentId);
+
+    @Select("select chatName from student_ai_questions where chatId = #{chatId} limit 1")
+    String getChatName(Integer chatId);
+
+    @Update("update student_ai_questions set chatName = #{name} where chatId = #{chatId}")
+    void setChatName(Integer chatId, String name);
+
+    @Delete("delete from student_ai_questions where chatId = #{chatId}")
+    void deleteChat(Integer chatId);
+
+
 
 //    Object getAiQuestionsCount(Integer studentId);
 }

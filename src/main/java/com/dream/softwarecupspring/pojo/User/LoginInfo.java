@@ -13,5 +13,6 @@ public class LoginInfo {
     private String username;       // 用户名
     private String name;           // 姓名
     private Integer role;
+    private String className;
     private String token;
 }

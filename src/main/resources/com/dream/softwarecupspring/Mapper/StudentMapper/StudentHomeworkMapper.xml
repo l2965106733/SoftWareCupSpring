@@ -39,7 +39,7 @@
             sa.score as score
         FROM homework_questions hq
                  LEFT JOIN questions q ON hq.question_id = q.id
-                 LEFT JOIN student_answers sa ON sa.question_id = q.id AND sa.homework_id = #{homeworkId}
+                 LEFT JOIN student_answers sa ON sa.question_id = q.id AND sa.homework_id = #{homeworkId} and sa.student_id = #{studentId}
         WHERE hq.homework_id = #{homeworkId}
         ORDER BY hq.question_order
     </select>

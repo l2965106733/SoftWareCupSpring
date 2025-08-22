@@ -4,6 +4,7 @@ import com.dream.softwarecupspring.Mapper.StudentMapper.StudentHomeworkMapper;
 import com.dream.softwarecupspring.Service.StudentService.StudentHomeworkService;
 import com.dream.softwarecupspring.pojo.Homework.StudentAnswer;
 import com.dream.softwarecupspring.pojo.Homework.StudentHomework;
+import com.dream.softwarecupspring.utils.CurrentHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class StudentHomeworkServiceImpl implements StudentHomeworkService {
      */
     @Override
     public List<Map<String, Object>> getHomeworkDetail(Integer homeworkId) {
-        return studentHomeworkMapper.getHomeworkDetailById(homeworkId);
+        Integer studentId = CurrentHolder.getCurrentId();
+        return studentHomeworkMapper.getHomeworkDetailById(homeworkId,studentId);
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface PublicMapper {
-    @Select("select id, username, name, role from users where username = #{username} and password = #{password}")
+    @Select("select id, username, name, role,className from users where username = #{username} and password = #{password}")
     User selectByUsernameAndPassword(User user);
 
     @Update("update users set password = #{newPassword} where identifier = #{identifier} and role = #{role}")

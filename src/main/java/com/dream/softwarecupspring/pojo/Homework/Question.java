@@ -19,5 +19,8 @@ public class Question {
     private Integer score;        // 分值
     private LocalDateTime createdTime; // 注册时间
     private LocalDateTime updatedTime; // 最后修改时间
+    private String standardAnswer;
+    private String studentAnswer;
+    private Integer studentScore;
 }
 

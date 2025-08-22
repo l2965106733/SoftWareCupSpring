@@ -45,7 +45,8 @@
             <if test="gender != null">gender = #{gender},</if>
             <if test="role != null">role = #{role},</if>
             <if test="identifier != null and identifier !=''">identifier = #{identifier},</if>
-            <if test="updateTime != null">update_time = #{updateTime}</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="className != null">className = #{className}</if>
         </set>
         where id = #{id}
     </update>
@@ -59,7 +60,7 @@
 
 
     <select id="pageSelect" resultType="com.dream.softwarecupspring.pojo.User.User">
-        select id, username, password, name, gender, role, identifier, create_time, update_time from users
+        select id, username, password, name, gender, role, identifier, create_time, update_time,className from users
         <where>
             role != 3
             <if test="name != null and name != ''">

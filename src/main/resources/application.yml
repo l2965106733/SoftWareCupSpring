@@ -19,11 +19,11 @@ mybatis:
 aliyun:
  oss:
   endpoint: https://oss-cn-beijing.aliyuncs.com
-  bucketName: softwarecupp
+  bucketName: softwarecup2025
   region: cn-beijing
-  accessKeyId: LTAI5tEzekfqvHsyM2XMt45R
-  accessKeySecret: rDW2uJ8Wi7O71xHHNcrHX6K1LR5UZt
+  accessKeyId: LTAI5tCzXcKbXwLvDVzXMK1Q
+  accessKeySecret: OhKuBf5RZsn7JwF0XT7hP95AOUKzdk
 
 
 ai:
- flaskUrl: https://hz-4.matpool.com:28531
+ flaskUrl: https://hz-4.matpool.com:29259

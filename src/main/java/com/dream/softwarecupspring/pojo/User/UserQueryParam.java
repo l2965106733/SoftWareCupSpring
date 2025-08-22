@@ -12,6 +12,7 @@ public class UserQueryParam {
     private String name;
     private Integer gender;
     private Integer role;
+    private String className;
     private String subject;
     private int page = 1;
     private int pageSize = 10;

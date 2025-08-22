@@ -15,6 +15,8 @@ public class AiQuestion {
     private LocalDateTime createdTime;
     private String questionContent;
     private String aiResponse;
+    private String chatName;
+    private Integer chatId;
     // 查询关联字段
     private String studentName;     // 学生姓名
 }

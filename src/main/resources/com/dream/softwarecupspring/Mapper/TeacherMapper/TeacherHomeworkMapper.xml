@@ -67,9 +67,9 @@
             q.content AS content,
             q.type AS type,
             q.score AS questionScore,
-            sa.answer AS answer,
+            sa.answer AS studentAnswer,
             sa.score AS score,
-            q.answer AS trueAnswer
+            q.answer AS standardAnswer
         FROM homework_questions hq
                  JOIN questions q ON hq.question_id = q.id
                  LEFT JOIN student_answers sa ON sa.question_id = q.id

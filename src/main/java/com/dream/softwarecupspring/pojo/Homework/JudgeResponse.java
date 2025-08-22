@@ -3,15 +3,12 @@ package com.dream.softwarecupspring.pojo.Homework;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
+import org.apache.ibatis.annotations.Delete;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TquestionQueryParam {
-    private String knowledge;
-    private String type;
-    private Integer count;
-    private String remark;
+public class JudgeResponse {
+    private Integer score;
+    private String feedback;
 }

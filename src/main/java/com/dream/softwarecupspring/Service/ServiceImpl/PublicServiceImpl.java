@@ -26,7 +26,7 @@ public class PublicServiceImpl implements PublicService {
         claims.put("id", u.getId());
         claims.put("username", u.getUsername());
         String jwt = JwtUtils.generateToken(claims);
-        return new LoginInfo(u.getId(),u.getUsername(),u.getName(),u.getRole(),jwt);
+        return new LoginInfo(u.getId(),u.getUsername(),u.getName(),u.getRole(),u.getClassName(),jwt);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class User {
         private Integer id;               // 用户唯一ID
         private String username;       // 用户名
+        private String className;
         private String password;       // 加密后的密码
         private String name;           // 姓名
         private Integer gender;         // 性别

@@ -3,6 +3,7 @@ package com.dream.softwarecupspring.Service.ServiceImpl.StudentServiceImpl;
 import com.dream.softwarecupspring.Mapper.StudentMapper.StudentStudyMapper;
 import com.dream.softwarecupspring.Service.StudentService.StudentStudyService;
 import com.dream.softwarecupspring.pojo.AI.AiQuestion;
+import com.dream.softwarecupspring.pojo.Homework.Question;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecord;
 import com.dream.softwarecupspring.pojo.Overall.StudyRecordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,4 +170,36 @@ public class StudentStudyServiceImpl implements StudentStudyService {
         aiQuestion.setCreatedTime(LocalDateTime.now());
         studentStudyMapper.insertAiQuestion(aiQuestion);
     }
+
+    @Override
+    public List<AiQuestion> getChatList(Long userId) {
+        return studentStudyMapper.getChatList(userId);
+    }
+
+
+    @Override
+    public List<AiQuestion> getChatDetailById(Long id) {
+        return studentStudyMapper.getChatDetailById(id);
+    }
+
+    @Override
+    public List<Question> getMistakes(Long studentId) {
+        return studentStudyMapper.getMistakes(studentId);
+    }
+
+    @Override
+    public String getChatName(Integer chatId) {
+        return studentStudyMapper.getChatName(chatId);
+    }
+
+    @Override
+    public void setChatName(Integer chatId, String name) {
+        studentStudyMapper.setChatName(chatId,name);
+    }
+
+    @Override
+    public void deleteChat(Integer chatId) {
+        studentStudyMapper.deleteChat(chatId);
+    }
+
 }
