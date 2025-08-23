@@ -11,5 +11,5 @@ public class JudgeQuestion {
     private String question;
     private String studentAnswer;
     private String standardAnswer;
-    private String totalScore;
+    private Integer totalScore;
 }

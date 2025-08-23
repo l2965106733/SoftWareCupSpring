@@ -69,6 +69,7 @@
             q.score AS questionScore,
             sa.answer AS studentAnswer,
             sa.score AS score,
+            q.score as totalScore,
             q.answer AS standardAnswer
         FROM homework_questions hq
                  JOIN questions q ON hq.question_id = q.id

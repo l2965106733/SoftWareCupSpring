@@ -138,7 +138,7 @@
             CASE
                 WHEN sa.score / q.score >= 0.9 THEN '优秀'
                 WHEN sa.score / q.score >= 0.6 THEN '良好'
-                WHEN sa.score / q.score >= 0.6 THEN '一般'
+                WHEN sa.score / q.score >= 0 THEN '一般'
                 ELSE '较差'
                 END AS label,
             COUNT(*) AS count

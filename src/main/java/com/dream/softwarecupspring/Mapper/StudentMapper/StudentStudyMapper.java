@@ -46,7 +46,17 @@ public interface StudentStudyMapper {
 
     void updateResourceDownloadCount(Long resourceId);
 
-    @Select("select chatId,chatName from student_ai_questions where student_id = #{userId} group by chatId,chatName,created_time order by created_time desc")
+    @Select("""
+SELECT chatId, chatName, created_time
+FROM (
+  SELECT chatId, chatName, created_time,
+         ROW_NUMBER() OVER (PARTITION BY chatId ORDER BY created_time DESC) AS rn
+  FROM student_ai_questions
+  WHERE student_id = #{userId}
+) t
+WHERE rn = 1
+ORDER BY created_time DESC
+""")
     List<AiQuestion> getChatList(Long userId);
 
     @Select("select * from student_ai_questions where chatId = #{id}")
