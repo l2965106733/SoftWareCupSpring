@@ -46,7 +46,7 @@ public interface StudentStudyMapper {
 
     void updateResourceDownloadCount(Long resourceId);
 
-    @Select("select chatId,chatName from student_ai_questions where student_id = #{userId} group by chatId,chatName")
+    @Select("select chatId,chatName from student_ai_questions where student_id = #{userId} group by chatId,chatName,created_time order by created_time desc")
     List<AiQuestion> getChatList(Long userId);
 
     @Select("select * from student_ai_questions where chatId = #{id}")

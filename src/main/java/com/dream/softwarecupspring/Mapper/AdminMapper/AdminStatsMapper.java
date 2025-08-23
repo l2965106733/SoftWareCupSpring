@@ -27,4 +27,10 @@ public interface AdminStatsMapper {
     List<Map<String, Object>> getKnowledgeDistribution(String knowledgeName);
 
     List<Map<String, Object>> getTopKnowledgeScore();
+
+    List<Map<String, Object>> getScoreTrend();
+
+    List<Map<String, Object>> getInteractionStat();
+
+    List<Map<String, Object>> getAiInteractionStat();
 }

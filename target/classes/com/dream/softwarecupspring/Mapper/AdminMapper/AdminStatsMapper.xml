@@ -161,8 +161,34 @@
             scoreRate DESC
         LIMIT 5
     </select>
+    <select id="getScoreTrend" resultType="java.util.Map">
+        select h.id  homeworkId,
+               h.title,
+               h.end_time,
+               ROUND(AVG(sh.total_score), 2)                                             as avgScore,
+               SUM(IF((sh.status = 1 or sh.status = 2), 1, 0)) / NULLIF(COUNT(sh.id), 0) AS submitRate
+        from homework h
+        join student_homework sh on h.id = sh.homework_id
+        GROUP BY h.id
 
-
+    </select>
+    <select id="getInteractionStat" resultType="java.util.Map">
+        SELECT
+            DATE(sq.created_time) AS d,
+            SUM(CASE WHEN sq.status = 1 THEN 1 ELSE 0 END) AS answered,
+            SUM(CASE WHEN sq.status = 0 THEN 1 ELSE 0 END) AS unanswered
+        FROM student_questions sq
+        GROUP BY DATE(sq.created_time)
+        ORDER BY d;
+    </select>
+    <select id="getAiInteractionStat" resultType="java.util.Map">
+        SELECT
+            DATE(saq.created_time) AS d,
+            COUNT(*) AS cnt
+        FROM student_ai_questions saq
+        GROUP BY DATE(saq.created_time)
+        ORDER BY d;
+    </select>
 
 
 </mapper>

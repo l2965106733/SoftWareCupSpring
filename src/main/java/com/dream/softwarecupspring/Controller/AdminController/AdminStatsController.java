@@ -70,4 +70,26 @@ public class AdminStatsController {
         return Result.success(activities);
     }
 
+    @GetMapping("/getScoreTrend")
+    public Result getScoreTrend() {
+        List<Map<String, Object>> scoreTrends = adminStatsService.getScoreTrend();
+        return Result.success(scoreTrends);
+    }
+
+    @GetMapping("/getInteractionStat")
+    public Result getInteractionStat() {
+        List<Map<String, Object>> interactions = adminStatsService.getInteractionStat();
+        return Result.success(interactions);
+    }
+
+    @GetMapping("/getAiInteractionStat")
+    public Result getAiInteractionStat() {
+        List<Map<String, Object>> AiInteractions = adminStatsService.getAiInteractionStat();
+        return Result.success(AiInteractions);
+    }
+
+
+
+
+
 }

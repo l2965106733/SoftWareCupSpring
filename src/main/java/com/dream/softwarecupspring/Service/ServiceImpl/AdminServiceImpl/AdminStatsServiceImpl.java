@@ -55,4 +55,19 @@ public class AdminStatsServiceImpl implements AdminStatsService {
     public List<Map<String, Object>> getTopKnowledgeScore() {
         return adminStatsMapper.getTopKnowledgeScore();
     }
+
+    @Override
+    public List<Map<String, Object>> getScoreTrend() {
+        return adminStatsMapper.getScoreTrend();
+    }
+
+    @Override
+    public List<Map<String, Object>> getInteractionStat() {
+        return adminStatsMapper.getInteractionStat();
+    }
+
+    @Override
+    public List<Map<String, Object>> getAiInteractionStat() {
+        return adminStatsMapper.getAiInteractionStat();
+    }
 }
