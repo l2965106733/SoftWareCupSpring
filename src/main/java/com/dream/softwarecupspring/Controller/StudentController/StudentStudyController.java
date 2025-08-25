@@ -56,7 +56,39 @@ public class StudentStudyController {
     @PostMapping("/chat")
     public Result getChat(@RequestBody ChatQueryParam chatQueryParam) {
         AiResponse response = aiUtils.callAI("generateStudentChat", chatQueryParam, "/ai");
-        return Result.success(response.getData());
+        String data = response.getData();
+        return Result.success(removeMarkdown(data));
+    }
+    public static String removeMarkdown(String input) {
+        // 去除标题（如 ### 标题 -> 标题）
+        input = input.replaceAll("^[#]+\\s*", "");
+
+        // 去除无序列表项（如 - 项目 -> 项目）
+        input = input.replaceAll("^-\\s*", "");
+
+        // 去除有序列表项（如 1. 项目 -> 项目）
+        input = input.replaceAll("^\\d+\\.\\s*", "");
+
+        // 保留分点（比如换行之后保持项目格式，添加缩进）
+        input = input.replaceAll("(?<=\n)-\\s*", "\n  - ");
+        input = input.replaceAll("(?<=\n)\\d+\\.\\s*", "\n  ");
+
+        // 去除粗体（如 **text** -> text）
+        input = input.replaceAll("\\*\\*(.*?)\\*\\*", "$1");
+
+        // 去除斜体（如 *text* -> text）
+        input = input.replaceAll("\\*(.*?)\\*", "$1");
+
+        // 去除行内代码（如 `code` -> code）
+        input = input.replaceAll("`([^`]+)`", "$1");
+
+        // 去除链接（如 [text](url) -> text）
+        input = input.replaceAll("\\[.*?\\]\\(.*?\\)", "$1");
+
+        // 去除换行符（保持原有的换行）
+        input = input.replaceAll("(?<=\\S)\\n(?=\\S)", " ");
+
+        return input;
     }
 
     @GetMapping("/getChatDetailById/{id}")
