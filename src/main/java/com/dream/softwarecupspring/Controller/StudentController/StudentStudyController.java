@@ -139,6 +139,8 @@ public class StudentStudyController {
 
     @PostMapping("/generateAIQuestion")
     public Result generateAIQuestion(@RequestBody TquestionQueryParam tquestionQueryParam) {
+        tquestionQueryParam.setKnowledge(tquestionQueryParam.getKnowledge()+ ',' +tquestionQueryParam.getRemark());
+        tquestionQueryParam.setRemark(null);
         AiResponse response = aiUtils.callAI("generateQuestion", tquestionQueryParam, "/ai");
 
         String rawText = response.getData();
