@@ -220,7 +220,6 @@
 
     <select id="getMistakes" resultType="com.dream.softwarecupspring.pojo.Homework.Question">
         select q.id,q.content, q.answer standardAnswer, q.explain, q.type, q.score, q.knowledge,sa.answer studentAnswer,sa.score studentScore  from questions q
-        join student_answers sa on sa.question_id = q.id where sa.score &lt; q.score and sa.student_id = #{studentId}
-    </select>
+        join student_answers sa on sa.question_id = q.id join student_homework sh on sa.homework_id = sh.homework_id where sa.score &lt; q.score and sa.student_id = #{studentId} and sh.status = 2  </select>
 </mapper>
 

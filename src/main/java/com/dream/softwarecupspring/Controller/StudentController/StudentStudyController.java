@@ -231,34 +231,10 @@ public class StudentStudyController {
     }
 
     public static String removeMarkdown(String input) {
-        // 去除标题（如 ### 标题 -> 标题）
-        input = input.replaceAll("(?m)^#[ ]*", "");
+        // 去除所有的井号（#），无论它们的位置（标题）
+        input = input.replaceAll("(?m)^#\\s*", "");
 
-        // 去除无序列表项（如 - 项目 -> 项目）
-        input = input.replaceAll("(?m)^-\\s*", "");
-
-        // 去除有序列表项（如 1. 项目 -> 项目）
-        input = input.replaceAll("(?m)^\\d+\\.\\s*", "");
-
-        // 保留分点（比如换行之后保持项目格式，添加缩进）
-        input = input.replaceAll("(?<=\n)-\\s*", "\n  - ");
-        input = input.replaceAll("(?<=\n)\\d+\\.\\s*", "\n  ");
-
-        // 去除粗体（如 **text** -> text）
-        input = input.replaceAll("\\*\\*(.*?)\\*\\*", "$1");
-
-        // 去除斜体（如 *text* -> text）
-        input = input.replaceAll("\\*(.*?)\\*", "$1");
-
-        // 去除行内代码（如 `code` -> code）
-        input = input.replaceAll("`([^`]+)`", "$1");
-
-        // 去除链接（如 [text](url) -> text）
-        input = input.replaceAll("\\[.*?\\]\\(.*?\\)", "$1");
-
-        // 保持换行符（原有换行）
-        input = input.replaceAll("(?<=\\S)\\n(?=\\S)", " ");
-
+        // 返回去除井号后的字符串
         return input;
     }
 }
