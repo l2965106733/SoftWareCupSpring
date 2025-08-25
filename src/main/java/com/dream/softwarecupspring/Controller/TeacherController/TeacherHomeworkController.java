@@ -172,15 +172,22 @@ public class TeacherHomeworkController {
         }
         return list;
     }
+
     public static String removeQuotedText(String input) {
         // 查找第一个 """ 出现的位置
         int startIndex = input.indexOf("\"\"\"");
+        if (startIndex == -1) {
+            startIndex = input.indexOf("```");
+        }
+
 
         // 如果找到了 """，则去掉其中的文本和 """ 包裹
         if (startIndex != -1) {
             // 查找第二个 """ 出现的位置
             int endIndex = input.indexOf("\"\"\"", startIndex + 3);
-
+            if (endIndex == -1) {
+                endIndex = input.indexOf("```", startIndex + 3);
+            }
             // 如果找到了第二个 """，则去掉其中的部分
             if (endIndex != -1) {
                 // 返回去掉包裹文本后的新字符串
@@ -191,5 +198,4 @@ public class TeacherHomeworkController {
         // 如果没有找到 """，则返回原始字符串
         return input;
     }
-
 }

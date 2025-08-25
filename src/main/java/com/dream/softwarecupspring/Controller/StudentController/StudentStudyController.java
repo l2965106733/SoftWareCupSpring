@@ -59,37 +59,6 @@ public class StudentStudyController {
         String data = response.getData();
         return Result.success(removeMarkdown(data));
     }
-    public static String removeMarkdown(String input) {
-        // 去除标题（如 ### 标题 -> 标题）
-        input = input.replaceAll("^[#]+\\s*", "");
-
-        // 去除无序列表项（如 - 项目 -> 项目）
-        input = input.replaceAll("^-\\s*", "");
-
-        // 去除有序列表项（如 1. 项目 -> 项目）
-        input = input.replaceAll("^\\d+\\.\\s*", "");
-
-        // 保留分点（比如换行之后保持项目格式，添加缩进）
-        input = input.replaceAll("(?<=\n)-\\s*", "\n  - ");
-        input = input.replaceAll("(?<=\n)\\d+\\.\\s*", "\n  ");
-
-        // 去除粗体（如 **text** -> text）
-        input = input.replaceAll("\\*\\*(.*?)\\*\\*", "$1");
-
-        // 去除斜体（如 *text* -> text）
-        input = input.replaceAll("\\*(.*?)\\*", "$1");
-
-        // 去除行内代码（如 `code` -> code）
-        input = input.replaceAll("`([^`]+)`", "$1");
-
-        // 去除链接（如 [text](url) -> text）
-        input = input.replaceAll("\\[.*?\\]\\(.*?\\)", "$1");
-
-        // 去除换行符（保持原有的换行）
-        input = input.replaceAll("(?<=\\S)\\n(?=\\S)", " ");
-
-        return input;
-    }
 
     @GetMapping("/getChatDetailById/{id}")
     public Result getChatDetailById(@PathVariable Long id) {
@@ -222,6 +191,7 @@ public class StudentStudyController {
 
             Question q = new Question();
             q.setId(qNum.isEmpty() ? null : Integer.valueOf(qNum));
+            stem = removeQuotedText(stem);
             q.setContent(stem);
             q.setAnswer(answer);
             q.setExplain(explain);
@@ -234,4 +204,61 @@ public class StudentStudyController {
         return list;
     }
 
+    public static String removeQuotedText(String input) {
+        // 查找第一个 """ 出现的位置
+        int startIndex = input.indexOf("\"\"\"");
+        if (startIndex == -1) {
+            startIndex = input.indexOf("```");
+        }
+
+
+        // 如果找到了 """，则去掉其中的文本和 """ 包裹
+        if (startIndex != -1) {
+            // 查找第二个 """ 出现的位置
+            int endIndex = input.indexOf("\"\"\"", startIndex + 3);
+            if (endIndex == -1) {
+                endIndex = input.indexOf("```", startIndex + 3);
+            }
+            // 如果找到了第二个 """，则去掉其中的部分
+            if (endIndex != -1) {
+                // 返回去掉包裹文本后的新字符串
+                return input.substring(0, startIndex) + input.substring(endIndex + 3);
+            }
+        }
+
+        // 如果没有找到 """，则返回原始字符串
+        return input;
+    }
+
+    public static String removeMarkdown(String input) {
+        // 去除标题（如 ### 标题 -> 标题）
+        input = input.replaceAll("(?m)^#[ ]*", "");
+
+        // 去除无序列表项（如 - 项目 -> 项目）
+        input = input.replaceAll("(?m)^-\\s*", "");
+
+        // 去除有序列表项（如 1. 项目 -> 项目）
+        input = input.replaceAll("(?m)^\\d+\\.\\s*", "");
+
+        // 保留分点（比如换行之后保持项目格式，添加缩进）
+        input = input.replaceAll("(?<=\n)-\\s*", "\n  - ");
+        input = input.replaceAll("(?<=\n)\\d+\\.\\s*", "\n  ");
+
+        // 去除粗体（如 **text** -> text）
+        input = input.replaceAll("\\*\\*(.*?)\\*\\*", "$1");
+
+        // 去除斜体（如 *text* -> text）
+        input = input.replaceAll("\\*(.*?)\\*", "$1");
+
+        // 去除行内代码（如 `code` -> code）
+        input = input.replaceAll("`([^`]+)`", "$1");
+
+        // 去除链接（如 [text](url) -> text）
+        input = input.replaceAll("\\[.*?\\]\\(.*?\\)", "$1");
+
+        // 保持换行符（原有换行）
+        input = input.replaceAll("(?<=\\S)\\n(?=\\S)", " ");
+
+        return input;
+    }
 }
